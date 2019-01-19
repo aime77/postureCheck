@@ -1,9 +1,9 @@
 const mongoose = require("mongoose");
-
-const Schema = mongoose.Schema;
+const {Schema} = mongoose;
 
 const UserSchema = new Schema({
-  
+  googleId: String,
+  firstName: String,
 });
 
 const User = mongoose.model("User", UserSchema);

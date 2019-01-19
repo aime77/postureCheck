@@ -1,22 +1,20 @@
 const express = require("express");
-
 const mongoose = require("mongoose");
-const routes = require("./routes");
+const keys = require("./config/keys");
+require("./services/passport");
+require("./models/User");
 
-const PORT = process.env.PORT || 3001;
 const app = express();
 
+mongoose.connect(keys.mongoURI || "mongodb://localhost/posture-check");
 
-app.use(express.urlencoded({ extended: true }));
-app.use(express.json());
+const PORT = process.env.PORT || 3001;
 
 if (process.env.NODE_ENV === "production") {
   app.use(express.static("client/build"));
 }
 
-app.use(routes);
-
-mongoose.connect(process.env.MONGODB_URI || "mongodb://localhost/posture-check");
+require("./routes/authRoutes")(app);
 
 app.listen(PORT, () => {
   console.log(`🌎 API server on port ${PORT}`);
