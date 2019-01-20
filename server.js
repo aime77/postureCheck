@@ -1,21 +1,33 @@
 const express = require("express");
 const mongoose = require("mongoose");
-const keys = require("./config/keys");
-require("./services/passport");
-require("./models/User");
+const cookieSession = require("cookie-session");
+const passport = require("passport");
 
-const app = express();
+const keys = require("./config/keys");
+require("./models/User");
+require("./services/passport");
 
 mongoose.connect(keys.mongoURI || "mongodb://localhost/posture-check");
 
-const PORT = process.env.PORT || 3001;
+const app = express();
+
+app.use(
+  cookieSession({
+    maxAge: 20 * 24 * 60 * 60 * 1000,
+    keys: [keys.cookieKey]
+  })
+);
+
+app.use(passport.initialize());
+app.use(passport.session());
+
+require("./routes/authRoutes")(app);
 
 if (process.env.NODE_ENV === "production") {
   app.use(express.static("client/build"));
 }
 
-require("./routes/authRoutes")(app);
-
+const PORT = process.env.PORT || 3001;
 app.listen(PORT, () => {
   console.log(`🌎 API server on port ${PORT}`);
 });
