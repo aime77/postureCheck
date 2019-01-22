@@ -4,11 +4,7 @@ import { Button, Menu } from 'semantic-ui-react'
 const MenuExampleButtons = () => (
   <Menu>
     <Menu.Item>
-      <Button primary>Sign up</Button>
-    </Menu.Item>
-
-    <Menu.Item>
-      <Button>Log-in</Button>
+      <Button>Log-in With Google</Button>
     </Menu.Item>
   </Menu>
 )
