@@ -1,12 +1,22 @@
-import React from 'react'
-import { Button, Menu } from 'semantic-ui-react'
+import React, { Component } from "react";
+import { connect } from "react-redux";
+import { Button, Menu } from "semantic-ui-react";
 
-const MenuExampleButtons = () => (
-  <Menu>
-    <Menu.Item>
-      <Button>Log-in With Google</Button>
-    </Menu.Item>
-  </Menu>
-)
+class MenuPage extends Component {
+  render() {
+    console.lof(this.props)
+    return (
+      <Menu>
+        <Menu.Item>
+          <Button>Log-in With Google</Button>
+        </Menu.Item>
+      </Menu>
+    );
+  }
+}
 
-export default MenuExampleButtons
+function mapStateToProps({auth}){
+  return {auth};
+}
+
+export default connect(mapStateToProps)(MenuPage);
