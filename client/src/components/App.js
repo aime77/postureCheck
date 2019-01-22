@@ -1,9 +1,9 @@
 import React, { Component } from "react";
-import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
+import { BrowserRouter, Route} from "react-router-dom";
 import { connect } from "react-redux";
 import * as actions from "../actions";
 
-import Menu from "./Menu";
+import MenuNav from "./MenuNav";
 
 import Dashboard from "../pages/Dashboard";
 import Home from "../pages/Home";
@@ -14,15 +14,15 @@ class App extends Component {
   }
   render() {
     return (
-      <Router>
-        <div>
-          <Menu />
-          <Switch>
-            <Route exact path="/home" component={Home} />
+      <div className="container">
+        <BrowserRouter>
+          <div>
+            <MenuNav />
+            <Route exact path="/" component={Home} />
             <Route exact path="/dashboard" component={Dashboard} />
-          </Switch>
-        </div>
-      </Router>
+          </div>
+        </BrowserRouter>
+      </div>
     );
   }
 }

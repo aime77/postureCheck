@@ -6,7 +6,13 @@ module.exports = app => {
     passport.authenticate("google", { scope: ["profile", "email"] })
   );
 
-  app.get("/auth/google/callback", passport.authenticate("google"));
+  app.get(
+    "/auth/google/callback",
+    passport.authenticate("google"),
+    (request, response) => {
+      response.redirect("/dashboard");
+    }
+  );
 
   app.get("/api/current_user", (request, response) => {
     response.send(request.user);
@@ -14,6 +20,6 @@ module.exports = app => {
 
   app.get("/api/logout", (request, response) => {
     request.logout();
-    response.send(request.user);
+    response.redirect("/");
   });
 };
