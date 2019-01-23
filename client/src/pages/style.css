@@ -1,0 +1,7 @@
+
+.bgImage{
+    background-image: url("../images/Picture1.png");
+    background-repeat: no-repeat;
+    overflow-y: hidden;
+    background-position: left 10px top 10px;
+  }

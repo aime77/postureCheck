@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import { Button, Menu } from "semantic-ui-react";
+import { Link } from "react-router-dom";
 
 class MenuNav extends Component {
   renderContent() {
@@ -16,8 +17,7 @@ class MenuNav extends Component {
       default:
         return (
           <Button href="/api/logout">
-            Log-out
-            <i class="sign-out icon big" />
+            <i className="sign-out icon big">Log-out</i>
           </Button>
         );
     }
@@ -26,7 +26,9 @@ class MenuNav extends Component {
     console.log(this.props);
     return (
       <Menu>
-         <Menu.Item className="left brand-logo">Posture Check</Menu.Item>
+        <Link to={this.props.auth ? "/dashboard" : "/"}>
+          <Menu.Item className="left brand-logo">Posture Check</Menu.Item>
+        </Link>
         <Menu.Item className="right">{this.renderContent()}</Menu.Item>
       </Menu>
     );

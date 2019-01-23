@@ -14,7 +14,7 @@ class App extends Component {
   }
   render() {
     return (
-      <div className="container">
+      
         <BrowserRouter>
           <div>
             <MenuNav />
@@ -22,7 +22,7 @@ class App extends Component {
             <Route exact path="/dashboard" component={Dashboard} />
           </div>
         </BrowserRouter>
-      </div>
+     
     );
   }
 }
