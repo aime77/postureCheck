@@ -8,7 +8,7 @@ const Home = () => {
       <div style={{ textAlign: "center" }}>
         <h1>Posture Check!</h1>
       </div>
-      <div className="bgImage" style={{height:"800px"}} />
+      <div className="bgImage" style={{height:"500px"}} />
     </div>
   );
 };
