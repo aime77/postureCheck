@@ -5,6 +5,7 @@
   "proxy": "http://localhost:3001/",
   "dependencies": {
     "@tensorflow-models/posenet": "^0.2.3",
+    "@tensorflow/tfjs": "^0.14.2",
     "axios": "^0.18.0",
     "http-proxy-middleware": "^0.19.1",
     "react": "^16.7.0",

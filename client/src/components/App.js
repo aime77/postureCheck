@@ -7,6 +7,7 @@ import MenuNav from "./MenuNav";
 
 import Dashboard from "../pages/Dashboard";
 import Home from "../pages/Home";
+import Tensorflow from "../pages/Tensorflow";
 
 class App extends Component {
   componentDidMount() {
@@ -20,6 +21,7 @@ class App extends Component {
             <MenuNav />
             <Route exact path="/" component={Home} />
             <Route exact path="/dashboard" component={Dashboard} />
+            <Route exact path="/tensorflow" component={Tensorflow} />
           </div>
         </BrowserRouter>
      
