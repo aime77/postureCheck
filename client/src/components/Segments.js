@@ -13,7 +13,7 @@ const Segments = ({children}) => (
       {children}
         </Grid.Column >
         <Grid.Column>
-          {children}
+          
         </Grid.Column>
       </Grid.Row>
     </Grid>

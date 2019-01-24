@@ -1,6 +1,7 @@
 import * as posenet from "@tensorflow-models/posenet";
 import * as React from "react";
 import { isMobile, drawKeypoints, drawSkeleton } from "./utils";
+import "./posenet.css"
 
 export default class PoseNet extends React.Component {
   static defaultProps = {
@@ -132,6 +133,7 @@ export default class PoseNet extends React.Component {
             outputStride
           );
 
+          console.log(pose);
           poses.push(pose);
 
           break;
@@ -164,6 +166,7 @@ export default class PoseNet extends React.Component {
       // scores
       poses.forEach(({ score, keypoints }) => {
         if (score >= minPoseConfidence) {
+          console.log(score)
           if (showPoints) {
             drawKeypoints(keypoints, minPartConfidence, skeletonColor, ctx);
           }
