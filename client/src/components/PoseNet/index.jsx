@@ -30,6 +30,8 @@ export default class PoseNet extends React.Component {
     super(props, PoseNet.defaultProps);
     this.state = { loading: true };
     this.state = { displayCamera: false };
+    this.state = {timer: null};
+    this.state ={counter : 0};
   }
 
   getCanvas = elem => {
@@ -40,21 +42,24 @@ export default class PoseNet extends React.Component {
     this.video = elem;
   };
 
+  tick=() =>{
+    this.setState({
+      counter: this.state.counter + 1
+    });
+  }
+
   async componentWillMount() {
     // Loads the pre-trained PoseNet model
     this.net = await posenet.load(this.props.mobileNetArchitecture);
   }
 
   async componentDidMount() {
-    try {
-      await this.setupCamera();
-    } catch (e) {
-      throw "This browser does not support video capture, or this device does not have a camera";
-    } finally {
-      this.setState({ loading: false });
-    }
+    let timer = await setInterval(this.tick, 1000);
+    this.setState({ timer });
+  }
 
-    this.detectPose();
+  async componentWillUnmount() {
+    await this.clearInterval(this.state.timer);
   }
 
   async setupCamera() {
@@ -205,13 +210,11 @@ export default class PoseNet extends React.Component {
     this.detectPose();
   };
 
-  onStopButton=()=>{
+  onStopButton = async () => {
+    await this.setState({ displayCamera: false });
+  };
 
-  }
-
-  onPauseButon=()=>{
-    
-  }
+  onPauseButon = () => {};
 
   render() {
     const loading = this.state.loading ? (
@@ -233,6 +236,7 @@ export default class PoseNet extends React.Component {
             <Buttons onClick={this.onStopButton} className="stopButton">
               Stop
             </Buttons>
+            <div>Loading{"...".substr(0, this.state.counter % 3 + 1)}</div>
           </div>
         ) : (
           <div>
