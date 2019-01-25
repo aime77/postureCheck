@@ -1,8 +1,8 @@
 import * as posenet from "@tensorflow-models/posenet";
 import * as React from "react";
 import { isMobile, drawKeypoints, drawSkeleton } from "./utils";
-import "./posenet.css"
-
+import "./posenet.css";
+import StartButton from "../StartButton";
 export default class PoseNet extends React.Component {
   static defaultProps = {
     videoWidth: 600,
@@ -27,6 +27,7 @@ export default class PoseNet extends React.Component {
   constructor(props) {
     super(props, PoseNet.defaultProps);
     this.state = { loading: true };
+    this.state = { displayCamera: false };
   }
 
   getCanvas = elem => {
@@ -166,7 +167,7 @@ export default class PoseNet extends React.Component {
       // scores
       poses.forEach(({ score, keypoints }) => {
         if (score >= minPoseConfidence) {
-          console.log(score)
+          console.log(score);
           if (showPoints) {
             drawKeypoints(keypoints, minPartConfidence, skeletonColor, ctx);
           }
@@ -188,6 +189,22 @@ export default class PoseNet extends React.Component {
     poseDetectionFrameInner();
   }
 
+  onStartButton = async () => {
+    console.log("start button works")
+    this.setState({ displayCamera: true });
+    console.log(this.state.displayCamera);
+    try {
+      await this.setupCamera();
+    } catch (e) {
+      throw "This browser does not support video capture, or this device does not have a camera";
+    } finally {
+      this.setState({ loading: false });
+    }
+
+    this.detectPose();
+  };
+  
+
   render() {
     const loading = this.state.loading ? (
       <div className="PoseNet__loading">{this.props.loadingText}</div>
@@ -197,8 +214,16 @@ export default class PoseNet extends React.Component {
     return (
       <div className="PoseNet">
         {loading}
-        <video playsInline ref={this.getVideo} />
-        <canvas ref={this.getCanvas} />
+
+        {this.state.displayCamera ? (
+          <div>
+            <video playsInline ref={this.getVideo} />
+            <canvas ref={this.getCanvas} />
+          </div>
+        ) : (
+          <h5>Waiting for you to start </h5>
+        )}
+        <StartButton onClick={this.onStartButton} />
       </div>
     );
   }

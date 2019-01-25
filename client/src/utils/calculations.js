@@ -10,6 +10,12 @@ pointsTotalArray.forEach(val=>{
 })
 }
 
-if (pointsTotal===keyScore) return true;
+if (pointsTotal===keyScore) return pointsTotal;
 
+};
+
+const totalPointsSum=()=>{
+
+
+    
 }

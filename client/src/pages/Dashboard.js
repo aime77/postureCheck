@@ -18,9 +18,9 @@ class Dashboard extends Component {
         </div>
           <Stats/>
         
-        <Segments ><PoseNet/> </Segments >
+        <PoseNet/> 
        
-        <StartButton/>
+        
       </Container>
     );
   }

@@ -3,9 +3,9 @@ import { Container } from 'semantic-ui-react'
 
 const MainContainer = ({children}) => (
   <Container>
-    <p>
+   
       {children}
-    </p>
+    
   </Container>
 )
 
