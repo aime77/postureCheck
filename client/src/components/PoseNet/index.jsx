@@ -3,6 +3,8 @@ import * as React from "react";
 import { isMobile, drawKeypoints, drawSkeleton } from "./utils";
 import "./posenet.css";
 import StartButton from "../StartButton";
+import Buttons from "../Buttons";
+
 export default class PoseNet extends React.Component {
   static defaultProps = {
     videoWidth: 600,
@@ -190,9 +192,8 @@ export default class PoseNet extends React.Component {
   }
 
   onStartButton = async () => {
-    console.log("start button works")
-    this.setState({ displayCamera: true });
-    console.log(this.state.displayCamera);
+    await this.setState({ displayCamera: true });
+
     try {
       await this.setupCamera();
     } catch (e) {
@@ -203,7 +204,14 @@ export default class PoseNet extends React.Component {
 
     this.detectPose();
   };
-  
+
+  onStopButton=()=>{
+
+  }
+
+  onPauseButon=()=>{
+    
+  }
 
   render() {
     const loading = this.state.loading ? (
@@ -219,11 +227,19 @@ export default class PoseNet extends React.Component {
           <div>
             <video playsInline ref={this.getVideo} />
             <canvas ref={this.getCanvas} />
+            <Buttons onClick={this.onPauseButton} className="pauseButton">
+              Pause
+            </Buttons>
+            <Buttons onClick={this.onStopButton} className="stopButton">
+              Stop
+            </Buttons>
           </div>
         ) : (
-          <h5>Waiting for you to start </h5>
+          <div>
+            <h5>Waiting for you to start </h5>
+            <StartButton onClick={this.onStartButton} />
+          </div>
         )}
-        <StartButton onClick={this.onStartButton} />
       </div>
     );
   }
