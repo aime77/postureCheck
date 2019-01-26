@@ -4,6 +4,9 @@ import { isMobile, drawKeypoints, drawSkeleton } from "./utils";
 import "./posenet.css";
 import StartButton from "../StartButton";
 import Buttons from "../Buttons";
+import DropdownSelector from "../Dropdown";
+import Stats from "../Stats";
+import { Grid } from "semantic-ui-react";
 
 export default class PoseNet extends React.Component {
   static defaultProps = {
@@ -30,8 +33,8 @@ export default class PoseNet extends React.Component {
     super(props, PoseNet.defaultProps);
     this.state = { loading: true };
     this.state = { displayCamera: false };
-    this.state = {timer: null};
-    this.state ={counter : 0};
+    this.state = { timer: null };
+    this.state = { counter: 0 };
   }
 
   getCanvas = elem => {
@@ -42,11 +45,11 @@ export default class PoseNet extends React.Component {
     this.video = elem;
   };
 
-  tick=() =>{
+  tick = () => {
     this.setState({
       counter: this.state.counter + 1
     });
-  }
+  };
 
   async componentWillMount() {
     // Loads the pre-trained PoseNet model
@@ -54,12 +57,12 @@ export default class PoseNet extends React.Component {
   }
 
   async componentDidMount() {
-    let timer = await setInterval(this.tick, 1000);
-    this.setState({ timer });
+    // let timer = await setInterval(this.tick, 1000);
+    // this.setState({ timer });
   }
 
   async componentWillUnmount() {
-    await this.clearInterval(this.state.timer);
+    // await this.clearInterval(this.state.timer);
   }
 
   async setupCamera() {
@@ -208,9 +211,12 @@ export default class PoseNet extends React.Component {
     }
 
     this.detectPose();
+    let timer = await setInterval(this.tick, 1000);
+    this.setState({ timer });
   };
 
   onStopButton = async () => {
+    await clearInterval(this.state.timer);
     await this.setState({ displayCamera: false });
   };
 
@@ -223,26 +229,60 @@ export default class PoseNet extends React.Component {
       ""
     );
     return (
-      <div className="PoseNet">
-        {loading}
+      <div>
+        <Grid columns="equal">
+          <Grid.Row>
+            <Grid.Column>
+              <Stats label="level" value={<DropdownSelector />} />
+            </Grid.Column>
+            <Grid.Column>
+              <Stats label="score" value="77" />
+            </Grid.Column>
+
+            <Grid.Column>
+              {this.state.counter >= 10 ? (
+                <Stats label="timer" value={`00:${this.state.counter}`} />
+              ) : (
+                <Stats label="timer" value={`00:0${this.state.counter}`} />
+              )}
+              
+            </Grid.Column>
+            <Grid.Column>
+              <Stats label="poses #" value="3" />
+            </Grid.Column>
+          </Grid.Row>
+        </Grid>
 
         {this.state.displayCamera ? (
           <div>
-            <video playsInline ref={this.getVideo} />
-            <canvas ref={this.getCanvas} />
-            <Buttons onClick={this.onPauseButton} className="pauseButton">
-              Pause
-            </Buttons>
-            <Buttons onClick={this.onStopButton} className="stopButton">
-              Stop
-            </Buttons>
-            <div>Loading{"...".substr(0, this.state.counter % 3 + 1)}</div>
+            <Grid>
+              <Grid.Row>
+                <Grid.Column>
+                  <Buttons onClick={this.onPauseButton} className="pauseButton">
+                    Pause
+                  </Buttons>
+                  <Buttons onClick={this.onStopButton} className="stopButton">
+                    Stop
+                  </Buttons>
+                </Grid.Column>
+              </Grid.Row>
+            </Grid>
+            <div className="PoseNet">
+              {loading}
+              <video playsInline ref={this.getVideo} />
+              <canvas ref={this.getCanvas} />
+            </div>
+
+            {/* <div>Loading{"...".substr(0, this.state.counter % 3 + 1)}</div> */}
           </div>
         ) : (
-          <div>
-            <h5>Waiting for you to start </h5>
-            <StartButton onClick={this.onStartButton} />
-          </div>
+          <Grid>
+            <Grid.Row>
+              <Grid.Column>
+                <StartButton onClick={this.onStartButton} />
+              </Grid.Column>
+            </Grid.Row>
+          </Grid>
         )}
       </div>
     );
