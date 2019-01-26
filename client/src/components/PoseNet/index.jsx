@@ -132,6 +132,26 @@ export default class PoseNet extends React.Component {
     const net = this.net;
     const video = this.video;
 
+    
+    const calculatePoints = (data, a, b, c, d, keyScore) => {
+      const position = data.position;
+      let pointsTotal = 0;
+      if (
+        (position.x < a) &
+        (position.x > b) &
+        (position.y < c) &
+        (position.y > d)
+      ) {
+        const pointsTotalArray = [];
+        pointsTotalArray.push(data.score);
+        pointsTotalArray.forEach(val => {
+          pointsTotal = +val;
+        });
+      }
+
+      if (pointsTotal === keyScore) console.log (pointsTotal);
+    };
+
     const poseDetectionFrameInner = async () => {
       let poses = [];
 
@@ -144,7 +164,10 @@ export default class PoseNet extends React.Component {
             outputStride
           );
 
+          console.log(this.state.counter);
           console.log(pose);
+          
+          // calculatePoints(pose, 100, 100, 100, 100, 250);
           poses.push(pose);
 
           break;
@@ -177,7 +200,7 @@ export default class PoseNet extends React.Component {
       // scores
       poses.forEach(({ score, keypoints }) => {
         if (score >= minPoseConfidence) {
-          console.log(score);
+          console.log("score", poses);
           if (showPoints) {
             drawKeypoints(keypoints, minPartConfidence, skeletonColor, ctx);
           }
@@ -245,7 +268,6 @@ export default class PoseNet extends React.Component {
               ) : (
                 <Stats label="timer" value={`00:0${this.state.counter}`} />
               )}
-              
             </Grid.Column>
             <Grid.Column>
               <Stats label="poses #" value="3" />
