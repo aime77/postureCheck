@@ -1,22 +1,23 @@
-
-
-function Calculation(x1, x2, y1, y2, position) {
+export const Calculation = function(x1, x2, y1, y2, position) {
   this.x1 = x1;
   this.y1 = y1;
   this.x2 = x2;
   this.y2 = y2;
-  this.position.x = position.x;
-  this.position.y = position.y;
+  this.px = position.x;
+  this.py = position.y;
 
   this.range = () => {
     if (
-      this.position.x / this.position.y < this.x1 / this.y1 &&
-      this.position.x / this.position.y > this.x2 / this.y2
+      this.px / this.py < this.x1 / this.y1 &&
+      this.px / this.py > this.x2 / this.y2
     ) {
-      return this.position.x / this.position.y;
+      console.log("cal", this.px / this.py);
+      return this.px / this.py;
+    }else{
+      return 0;
     }
   };
-}
+};
 
 const estimatedPoses = {
   rightTricepStretchCal:
@@ -58,7 +59,7 @@ const estimatedPoses = {
   //9.17
 };
 
-function pointsCheck(pose) {
+export const pointsCheck = function(pose) {
   if (rightTricepStretch(pose) === estimatedPoses.rightTricepStretchCal) {
     return true;
   }
@@ -74,15 +75,17 @@ function pointsCheck(pose) {
   if (raiseArms(pose) === estimatedPoses.raiseArmsCal) {
     return true;
   }
-}
+};
 
-function rightTricepStretch(pose) {
-  const ls = pose.keypoints[5];
-  const rs = pose.keypoints[6];
-  const le = pose.keypoints[7];
-  const re = pose.keypoints[8];
-  const lw = pose.keypoints[8];
-  const rw = pose.keypoints[10];
+export const rightTricepStretch = function(pose) {
+  console.log("pose", pose);
+  const ls = pose.keypoints[5].position;
+  console.log("ls", ls);
+  const rs = pose.keypoints[6].position;
+  const le = pose.keypoints[7].position;
+  const re = pose.keypoints[8].position;
+  const lw = pose.keypoints[8].position;
+  const rw = pose.keypoints[10].position;
 
   const leftShoulder = new Calculation(
     390.8471071868517,
@@ -91,6 +94,9 @@ function rightTricepStretch(pose) {
     298.5759737747351,
     ls
   );
+
+  console.log("test", leftShoulder);
+
   const rightShoulder = new Calculation(
     301.08126565133887,
     296.08126565133887,
@@ -127,23 +133,32 @@ function rightTricepStretch(pose) {
     rw
   );
 
-  return (
-    leftShoulder +
-    rightShoulder +
-    leftElbow +
-    rightElbow +
-    leftWrist +
-    rightWrist
+  console.log(
+    leftShoulder.range() +
+      rightShoulder.range() +
+      leftElbow.range() +
+      rightElbow.range() +
+      leftWrist.range() +
+      rightWrist.range()
   );
-}
 
-function leftTricepStretch(pose) {
-  const ls = pose.keypoints[5];
-  const rs = pose.keypoints[6];
-  const le = pose.keypoints[7];
-  const re = pose.keypoints[8];
-  const lw = pose.keypoints[8];
-  const rw = pose.keypoints[10];
+  return (
+    leftShoulder.range() +
+    rightShoulder.range() +
+    leftElbow.range() +
+    rightElbow.range() +
+    leftWrist.range() +
+    rightWrist.range()
+  );
+};
+
+export const leftTricepStretch = function(pose) {
+  const ls = pose.keypoints[5].position;
+  const rs = pose.keypoints[6].position;
+  const le = pose.keypoints[7].position;
+  const re = pose.keypoints[8].position;
+  const lw = pose.keypoints[8].position;
+  const rw = pose.keypoints[10].position;
 
   const leftShoulder = new Calculation(
     378.37738416996245,
@@ -188,22 +203,22 @@ function leftTricepStretch(pose) {
     rw
   );
   return (
-    leftShoulder +
-    rightShoulder +
-    leftElbow +
-    rightElbow +
-    leftWrist +
-    rightWrist
+    leftShoulder.range() +
+    rightShoulder.range() +
+    leftElbow.range() +
+    rightElbow.range() +
+    leftWrist.range() +
+    rightWrist.range()
   );
-}
+};
 
-function openHeart(pose) {
-  const ls = pose.keypoints[5];
-  const rs = pose.keypoints[6];
-  const le = pose.keypoints[7];
-  const re = pose.keypoints[8];
-  const lw = pose.keypoints[8];
-  const rw = pose.keypoints[10];
+const openHeart = function(pose) {
+  const ls = pose.keypoints[5].position;
+  const rs = pose.keypoints[6].position;
+  const le = pose.keypoints[7].position;
+  const re = pose.keypoints[8].position;
+  const lw = pose.keypoints[8].position;
+  const rw = pose.keypoints[10].position;
 
   const leftShoulder = new Calculation(
     358.02880758071836,
@@ -248,22 +263,22 @@ function openHeart(pose) {
     rw
   );
   return (
-    leftShoulder +
-    rightShoulder +
-    leftElbow +
-    rightElbow +
-    leftWrist +
-    rightWrist
+    leftShoulder.range() +
+    rightShoulder.range() +
+    leftElbow.range() +
+    rightElbow.range() +
+    leftWrist.range() +
+    rightWrist.range()
   );
-}
+};
 
-function raiseArms(pose) {
-  const ls = pose.keypoints[5];
-  const rs = pose.keypoints[6];
-  const le = pose.keypoints[7];
-  const re = pose.keypoints[8];
-  const lw = pose.keypoints[8];
-  const rw = pose.keypoints[10];
+const raiseArms = function(pose) {
+  const ls = pose.keypoints[5].position;
+  const rs = pose.keypoints[6].position;
+  const le = pose.keypoints[7].position;
+  const re = pose.keypoints[8].position;
+  const lw = pose.keypoints[8].position;
+  const rw = pose.keypoints[10].position;
 
   const leftShoulder = new Calculation(
     390.69784330629216,
@@ -308,11 +323,11 @@ function raiseArms(pose) {
     rw
   );
   return (
-    leftShoulder +
-    rightShoulder +
-    leftElbow +
-    rightElbow +
-    leftWrist +
-    rightWrist
+    leftShoulder.range() +
+    rightShoulder.range() +
+    leftElbow.range() +
+    rightElbow.range() +
+    leftWrist.range() +
+    rightWrist.range()
   );
-}
+};

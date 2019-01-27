@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import MyContainer from "../components/MyContainer";
 
 
-class Tensorflow extends Component {
+class Three extends Component {
   render() {
     return (
       <MyContainer/>
@@ -10,4 +10,4 @@ class Tensorflow extends Component {
   }
 }
 
-export default Tensorflow;
+export default Three;

@@ -7,6 +7,7 @@ import Buttons from "../Buttons";
 import DropdownSelector from "../Dropdown";
 import Stats from "../Stats";
 import { Grid } from "semantic-ui-react";
+import * as calculations from "../../utils/calculations";
 
 export default class PoseNet extends React.Component {
   static defaultProps = {
@@ -34,7 +35,8 @@ export default class PoseNet extends React.Component {
     this.state = { loading: true };
     this.state = { displayCamera: false };
     this.state = { timer: null };
-    this.state = { counter: 0 };
+    this.state = { counter: 0, scorePoints: 0 };
+    //this.state = { scorePoints: 0 };
   }
 
   getCanvas = elem => {
@@ -53,6 +55,7 @@ export default class PoseNet extends React.Component {
 
   async componentWillMount() {
     // Loads the pre-trained PoseNet model
+    console.log(this.state.counter);
     this.net = await posenet.load(this.props.mobileNetArchitecture);
   }
 
@@ -132,26 +135,6 @@ export default class PoseNet extends React.Component {
     const net = this.net;
     const video = this.video;
 
-    
-    const calculatePoints = (data, a, b, c, d, keyScore) => {
-      const position = data.position;
-      let pointsTotal = 0;
-      if (
-        (position.x < a) &
-        (position.x > b) &
-        (position.y < c) &
-        (position.y > d)
-      ) {
-        const pointsTotalArray = [];
-        pointsTotalArray.push(data.score);
-        pointsTotalArray.forEach(val => {
-          pointsTotal = +val;
-        });
-      }
-
-      if (pointsTotal === keyScore) console.log (pointsTotal);
-    };
-
     const poseDetectionFrameInner = async () => {
       let poses = [];
 
@@ -164,13 +147,14 @@ export default class PoseNet extends React.Component {
             outputStride
           );
 
-          console.log(this.state.counter);
-          console.log(pose);
-          
-          // calculatePoints(pose, 100, 100, 100, 100, 250);
           poses.push(pose);
 
+          this.setState({
+            scorePoints:
+              this.state.scorePoints + calculations.rightTricepStretch(pose)
+          });
           break;
+
         case "multi-pose":
           poses = await net.estimateMultiplePoses(
             video,
@@ -183,6 +167,8 @@ export default class PoseNet extends React.Component {
           );
 
           break;
+
+        default:
       }
 
       ctx.clearRect(0, 0, videoWidth, videoHeight);
@@ -191,7 +177,7 @@ export default class PoseNet extends React.Component {
         ctx.save();
         ctx.scale(-1, 1);
         ctx.translate(-videoWidth, 0);
-        ctx.drawImage(video, 0, 0, videoWidth, videoHeight);
+        ctx.drawImage(video, 0, 0, videoWidth, videoHeight); //*for pause
         ctx.restore();
       }
 
@@ -240,10 +226,19 @@ export default class PoseNet extends React.Component {
 
   onStopButton = async () => {
     await clearInterval(this.state.timer);
+    await this.setState({ counter: 0 });
     await this.setState({ displayCamera: false });
   };
 
-  onPauseButon = () => {};
+  onPauseButon = async (ctx, video) => {
+    await clearInterval(this.state.timer);
+    const { videoWidth, videoHeight } = this.props;
+    const canvas = this.canvas;
+
+    canvas.width = videoWidth;
+    canvas.height = videoHeight;
+    ctx.drawImage(video, 0, 0, videoWidth, videoHeight); //*for pause
+  };
 
   render() {
     const loading = this.state.loading ? (
@@ -259,7 +254,7 @@ export default class PoseNet extends React.Component {
               <Stats label="level" value={<DropdownSelector />} />
             </Grid.Column>
             <Grid.Column>
-              <Stats label="score" value="77" />
+              <Stats label="score" value={this.state.scorePoints} />
             </Grid.Column>
 
             <Grid.Column>
