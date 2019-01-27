@@ -13,7 +13,7 @@ export const Calculation = function(x1, x2, y1, y2, position) {
     ) {
       console.log("cal", this.px / this.py);
       return this.px / this.py;
-    }else{
+    } else {
       return 0;
     }
   };
@@ -78,9 +78,8 @@ export const pointsCheck = function(pose) {
 };
 
 export const rightTricepStretch = function(pose) {
-  console.log("pose", pose);
+  
   const ls = pose.keypoints[5].position;
-  console.log("ls", ls);
   const rs = pose.keypoints[6].position;
   const le = pose.keypoints[7].position;
   const re = pose.keypoints[8].position;
@@ -94,8 +93,6 @@ export const rightTricepStretch = function(pose) {
     298.5759737747351,
     ls
   );
-
-  console.log("test", leftShoulder);
 
   const rightShoulder = new Calculation(
     301.08126565133887,
@@ -131,15 +128,6 @@ export const rightTricepStretch = function(pose) {
     357.5203021092398,
     352.5203021092398,
     rw
-  );
-
-  console.log(
-    leftShoulder.range() +
-      rightShoulder.range() +
-      leftElbow.range() +
-      rightElbow.range() +
-      leftWrist.range() +
-      rightWrist.range()
   );
 
   return (
@@ -212,7 +200,7 @@ export const leftTricepStretch = function(pose) {
   );
 };
 
-const openHeart = function(pose) {
+export const openHeart = function(pose) {
   const ls = pose.keypoints[5].position;
   const rs = pose.keypoints[6].position;
   const le = pose.keypoints[7].position;
@@ -272,7 +260,7 @@ const openHeart = function(pose) {
   );
 };
 
-const raiseArms = function(pose) {
+export const raiseArms = function(pose) {
   const ls = pose.keypoints[5].position;
   const rs = pose.keypoints[6].position;
   const le = pose.keypoints[7].position;

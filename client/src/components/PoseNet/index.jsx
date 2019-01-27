@@ -32,11 +32,14 @@ export default class PoseNet extends React.Component {
 
   constructor(props) {
     super(props, PoseNet.defaultProps);
-    this.state = { loading: true };
-    this.state = { displayCamera: false };
-    this.state = { timer: null };
-    this.state = { counter: 0, scorePoints: 0 };
-    //this.state = { scorePoints: 0 };
+    this.state = {
+      displayCamera: false,
+      timer: null,
+      counter: 0,
+      scorePoints: 0,
+      currentPose: "right tricept stretch",
+      loading: true
+    };
   }
 
   getCanvas = elem => {
@@ -138,6 +141,55 @@ export default class PoseNet extends React.Component {
     const poseDetectionFrameInner = async () => {
       let poses = [];
 
+      const changePose = async pose => {
+        switch (this.state.currentPose) {
+          case "right tricept stretch":
+            await this.setState({
+              scorePoints:
+                this.state.scorePoints + calculations.rightTricepStretch(pose)
+            });
+
+            if (this.state.scorePoints > 5) {
+              await this.setState({ scorePoints: 0 });
+              await this.setState({ currentPose: "left tricept stretch" });
+            }
+
+            break;
+
+          case await "left tricept stretch":
+            this.setState({
+              scorePoints:
+                this.state.scorePoints + calculations.leftTricepStretch(pose)
+            });
+            if (this.state.scorePoints > 6.8) {
+              this.setState({ scorePoints: 0 });
+              this.setState({ currentPose: "open heart" });
+            }
+            break;
+
+          case await "open heart":
+            this.setState({
+              scorePoints: this.state.scorePoints + calculations.openHeart(pose)
+            });
+            if (this.state.scorePoints > 5.2) {
+              this.setState({ scorePoints: 0 });
+              this.setState({ currentPose: "raise arms" });
+            }
+            break;
+
+          case await "raise arms":
+            this.setState({
+              scorePoints: this.state.scorePoints + calculations.raiseArms(pose)
+            });
+            if (this.state.scorePoints > 9.17) {
+              this.setState({ scorePoints: 0 });
+              this.setState({ currentPose: null });
+            }
+            break;
+
+          default:
+        }
+      };
       switch (algorithm) {
         case "single-pose":
           const pose = await net.estimateSinglePose(
@@ -149,10 +201,7 @@ export default class PoseNet extends React.Component {
 
           poses.push(pose);
 
-          this.setState({
-            scorePoints:
-              this.state.scorePoints + calculations.rightTricepStretch(pose)
-          });
+          changePose(pose);
           break;
 
         case "multi-pose":
@@ -265,7 +314,7 @@ export default class PoseNet extends React.Component {
               )}
             </Grid.Column>
             <Grid.Column>
-              <Stats label="poses #" value="3" />
+              <Stats label="poses" value={this.state.currentPose} />
             </Grid.Column>
           </Grid.Row>
         </Grid>
