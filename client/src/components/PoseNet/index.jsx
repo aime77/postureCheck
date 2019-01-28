@@ -4,9 +4,15 @@ import { isMobile, drawKeypoints, drawSkeleton } from "./utils";
 import "./posenet.css";
 import StartButton from "../StartButton";
 import Buttons from "../Buttons";
+import PoseExample from "../PoseExample";
+import posture1 from "../../images/p1-oh.jpg";
+import posture2 from "../../images/p2-ra.jpg";
+import posture3 from "../../images/p1-oh.jpg";
+import posture4 from "../../images/p2-ra.jpg";
+
 import DropdownSelector from "../Dropdown";
 import Stats from "../Stats";
-import { Grid } from "semantic-ui-react";
+import { Grid, Image } from "semantic-ui-react";
 import * as calculations from "../../utils/calculations";
 
 export default class PoseNet extends React.Component {
@@ -38,7 +44,8 @@ export default class PoseNet extends React.Component {
       counter: 0,
       scorePoints: 0,
       currentPose: "right tricept stretch",
-      loading: true
+      loading: true,
+      posture: posture1
     };
   }
 
@@ -57,18 +64,7 @@ export default class PoseNet extends React.Component {
   };
 
   async componentWillMount() {
-    // Loads the pre-trained PoseNet model
-    console.log(this.state.counter);
     this.net = await posenet.load(this.props.mobileNetArchitecture);
-  }
-
-  async componentDidMount() {
-    // let timer = await setInterval(this.tick, 1000);
-    // this.setState({ timer });
-  }
-
-  async componentWillUnmount() {
-    // await this.clearInterval(this.state.timer);
   }
 
   async setupCamera() {
@@ -152,6 +148,7 @@ export default class PoseNet extends React.Component {
             if (this.state.scorePoints > 5) {
               await this.setState({ scorePoints: 0 });
               await this.setState({ currentPose: "left tricept stretch" });
+              await this.setState({ posture: posture1 });
             }
 
             break;
@@ -164,6 +161,7 @@ export default class PoseNet extends React.Component {
             if (this.state.scorePoints > 6.8) {
               this.setState({ scorePoints: 0 });
               this.setState({ currentPose: "open heart" });
+              this.setState({ posture: posture2 });
             }
             break;
 
@@ -174,6 +172,7 @@ export default class PoseNet extends React.Component {
             if (this.state.scorePoints > 5.2) {
               this.setState({ scorePoints: 0 });
               this.setState({ currentPose: "raise arms" });
+              this.setState({ posture: posture3 });
             }
             break;
 
@@ -184,6 +183,9 @@ export default class PoseNet extends React.Component {
             if (this.state.scorePoints > 9.17) {
               this.setState({ scorePoints: 0 });
               this.setState({ currentPose: null });
+              this.setState({ posture: posture4 });
+              await clearInterval(this.state.timer);
+              await this.setState({ counter: 0 });
             }
             break;
 
@@ -321,9 +323,14 @@ export default class PoseNet extends React.Component {
 
         {this.state.displayCamera ? (
           <div>
-            <Grid>
+            <Grid columns="equal">
               <Grid.Row>
                 <Grid.Column>
+                  <div className="PoseNet">
+                    {loading}
+                    <video playsInline ref={this.getVideo} />
+                    <canvas ref={this.getCanvas} />
+                  </div>
                   <Buttons onClick={this.onPauseButton} className="pauseButton">
                     Pause
                   </Buttons>
@@ -331,15 +338,11 @@ export default class PoseNet extends React.Component {
                     Stop
                   </Buttons>
                 </Grid.Column>
+                <Grid.Column>
+                  <Image src={this.state.posture} />
+                </Grid.Column>
               </Grid.Row>
             </Grid>
-            <div className="PoseNet">
-              {loading}
-              <video playsInline ref={this.getVideo} />
-              <canvas ref={this.getCanvas} />
-            </div>
-
-            {/* <div>Loading{"...".substr(0, this.state.counter % 3 + 1)}</div> */}
           </div>
         ) : (
           <Grid>
