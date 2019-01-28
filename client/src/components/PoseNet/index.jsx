@@ -4,11 +4,11 @@ import { isMobile, drawKeypoints, drawSkeleton } from "./utils";
 import "./posenet.css";
 import StartButton from "../StartButton";
 import Buttons from "../Buttons";
-import PoseExample from "../PoseExample";
 import posture1 from "../../images/p1-oh.jpg";
 import posture2 from "../../images/p2-ra.jpg";
 import posture3 from "../../images/p1-oh.jpg";
 import posture4 from "../../images/p2-ra.jpg";
+import YouTube from "../YouTube";
 
 import DropdownSelector from "../Dropdown";
 import Stats from "../Stats";
@@ -339,7 +339,8 @@ export default class PoseNet extends React.Component {
                   </Buttons>
                 </Grid.Column>
                 <Grid.Column>
-                  <Image src={this.state.posture} />
+                  {/* <Image src={this.state.posture} /> */}
+                  <YouTube/>
                 </Grid.Column>
               </Grid.Row>
             </Grid>

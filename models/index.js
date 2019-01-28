@@ -1,5 +1,5 @@
 module.exports = {
     User: require("./User"),
-    Posture: require("./Posture")
+    Scores: require("./Scores")
   };
   
