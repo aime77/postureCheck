@@ -11,8 +11,8 @@ export const Calculation = function(x1, x2, y1, y2, position) {
       this.px / this.py < this.x1 / this.y1 &&
       this.px / this.py > this.x2 / this.y2
     ) {
-      console.log("cal", this.px / this.py);
-      return this.px / this.py;
+      
+      return (this.px / this.py).toFixed(2);
     } else {
       return 0;
     }

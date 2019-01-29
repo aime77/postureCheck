@@ -4,16 +4,17 @@ import { isMobile, drawKeypoints, drawSkeleton } from "./utils";
 import "./posenet.css";
 import StartButton from "../StartButton";
 import Buttons from "../Buttons";
+
+import YouTube from "../YouTube";
+
+import Stats from "../Stats";
+import { Grid } from "semantic-ui-react";
 import posture1 from "../../images/p1-oh.jpg";
 import posture2 from "../../images/p2-ra.jpg";
 import posture3 from "../../images/p1-oh.jpg";
 import posture4 from "../../images/p2-ra.jpg";
-import YouTube from "../YouTube";
-
-import DropdownSelector from "../Dropdown";
-import Stats from "../Stats";
-import { Grid, Image } from "semantic-ui-react";
 import * as calculations from "../../utils/calculations";
+
 
 export default class PoseNet extends React.Component {
   static defaultProps = {
@@ -45,7 +46,7 @@ export default class PoseNet extends React.Component {
       scorePoints: 0,
       currentPose: "right tricept stretch",
       loading: true,
-      posture: posture1
+      posture: posture1,
     };
   }
 
@@ -144,15 +145,15 @@ export default class PoseNet extends React.Component {
               scorePoints:
                 this.state.scorePoints + calculations.rightTricepStretch(pose)
             });
-
+    
             if (this.state.scorePoints > 5) {
               await this.setState({ scorePoints: 0 });
               await this.setState({ currentPose: "left tricept stretch" });
               await this.setState({ posture: posture1 });
             }
-
+    
             break;
-
+    
           case await "left tricept stretch":
             this.setState({
               scorePoints:
@@ -164,7 +165,7 @@ export default class PoseNet extends React.Component {
               this.setState({ posture: posture2 });
             }
             break;
-
+    
           case await "open heart":
             this.setState({
               scorePoints: this.state.scorePoints + calculations.openHeart(pose)
@@ -175,7 +176,7 @@ export default class PoseNet extends React.Component {
               this.setState({ posture: posture3 });
             }
             break;
-
+    
           case await "raise arms":
             this.setState({
               scorePoints: this.state.scorePoints + calculations.raiseArms(pose)
@@ -188,10 +189,12 @@ export default class PoseNet extends React.Component {
               await this.setState({ counter: 0 });
             }
             break;
-
+    
           default:
         }
       };
+    
+
       switch (algorithm) {
         case "single-pose":
           const pose = await net.estimateSinglePose(
@@ -203,7 +206,7 @@ export default class PoseNet extends React.Component {
 
           poses.push(pose);
 
-          changePose(pose);
+         changePose(pose);
           break;
 
         case "multi-pose":
@@ -237,7 +240,6 @@ export default class PoseNet extends React.Component {
       // scores
       poses.forEach(({ score, keypoints }) => {
         if (score >= minPoseConfidence) {
-          console.log("score", poses);
           if (showPoints) {
             drawKeypoints(keypoints, minPartConfidence, skeletonColor, ctx);
           }
@@ -260,7 +262,7 @@ export default class PoseNet extends React.Component {
   }
 
   onStartButton = async () => {
-    await this.setState({ displayCamera: true });
+    await this.setState({ displayCamera: true, showVideo: true });
 
     try {
       await this.setupCamera();
@@ -277,8 +279,7 @@ export default class PoseNet extends React.Component {
 
   onStopButton = async () => {
     await clearInterval(this.state.timer);
-    await this.setState({ counter: 0 });
-    await this.setState({ displayCamera: false });
+    await this.setState({ counter: 0, displayCamera: false, showVideo: false });
   };
 
   onPauseButon = async (ctx, video) => {
@@ -336,8 +337,7 @@ export default class PoseNet extends React.Component {
                   </Buttons>
                 </Grid.Column>
                 <Grid.Column>
-                  {/* <Image src={this.state.posture} /> */}
-                  <YouTube/>
+                  <YouTube />
                 </Grid.Column>
               </Grid.Row>
             </Grid>

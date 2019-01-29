@@ -5,7 +5,7 @@ const Stats = ({value, label}) => (
   <Segment inverted>
     <Statistic.Group inverted>
       <Statistic >
-        <Statistic.Value>{value} </Statistic.Value>
+        <Statistic.Value style={{fontSize:"60px"}}>{value} </Statistic.Value>
         <Statistic.Label>{label}</Statistic.Label>
       </Statistic>
     </Statistic.Group> 

@@ -5,17 +5,22 @@ import VideoList from "./VideoList";
 import VideoDetail from "./VideoDetail.js";
 
 class YouTube extends React.Component {
-  state = { videos: [], selectedVideo:null};
-  onTermSubmit = async term => {
+  state = { videos: [], selectedVideo:null, term:"office stretch"};
+
+ searchYouTube = async() => {
     const response = await youtube.get("/search", {
       params: {
-        q: term
+        q: this.state.term
       }
     });
 
     this.setState({ videos: response.data.items,
     selectedVideo:response.data.items[0] });
   };
+
+  componentDidMount(){
+   this.searchYouTube();
+  }
 
   onVideoSelect=(video)=>{
    this.setState({selectedVideo:video});
@@ -24,7 +29,6 @@ class YouTube extends React.Component {
   render() {
     return (
       <div className="ui container">
-        <SearchBar onFormSubmit={this.onTermSubmit} />
         <div className="ui grid">
           <div className="ui row">
             <div className="eleven wide column">
