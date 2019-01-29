@@ -302,9 +302,6 @@ export default class PoseNet extends React.Component {
         <Grid columns="equal">
           <Grid.Row>
             <Grid.Column>
-              <Stats label="level" value={<DropdownSelector />} />
-            </Grid.Column>
-            <Grid.Column>
               <Stats label="score" value={this.state.scorePoints} />
             </Grid.Column>
 

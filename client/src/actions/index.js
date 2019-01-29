@@ -7,8 +7,13 @@ export const fetchUser = () => async dispatch => {
   dispatch({ type: FETCH_USER, payload: response.data });
 };
 
-
-export const scoresUser= async dispatch=> {
-  const response= await axios.get("/api/books");
+export const scoresUser = async dispatch => {
+  const response = await axios.get("/api/scores");
   dispatch({ type: FETCH_USER, payload: response.data });
-  };
+};
+
+export const submitForm = (values, history) => async dispatch=>{
+  const response =await axios.post("/api/forms", values);
+  history.push("/dashboard");
+  dispatch({type:FETCH_USER, payload:response.data});
+};

@@ -4,10 +4,8 @@ const {Schema} = mongoose;
 const UserSchema = new Schema({
   googleId: String,
   firstName: String,
-  scores: Number,
-  video:,
-  category,
-  time:
+  age: Number,
+  
 });
 
 const User = mongoose.model("User", UserSchema);
