@@ -11,8 +11,7 @@ export const Calculation = function(x1, x2, y1, y2, position) {
       this.px / this.py < this.x1 / this.y1 &&
       this.px / this.py > this.x2 / this.y2
     ) {
-      
-      return (this.px / this.py).toFixed(2);
+      return Math.round((this.px / this.py) * 100) / 100;
     } else {
       return 0;
     }
@@ -78,7 +77,6 @@ export const pointsCheck = function(pose) {
 };
 
 export const rightTricepStretch = function(pose) {
-  
   const ls = pose.keypoints[5].position;
   const rs = pose.keypoints[6].position;
   const le = pose.keypoints[7].position;

@@ -4,14 +4,14 @@ import PoseNet from "../components/PoseNet";
 import YouTube from "../components/YouTube";
 
 class Dashboard extends Component {
-  state = { option: null };
+  state = { option: "5", term:"hello" };
 
   renderPopulationKids() {
     return (
       <Container>
         <h1>kids</h1>
          <PoseNet />
-        <YouTube />
+        <YouTube term={this.state.term} />
       </Container>
     );
   }
@@ -19,7 +19,7 @@ class Dashboard extends Component {
   renderPopulationOffice() {
     return (
       <Container>
-        <YouTube term="office stretches" />
+        <YouTube term={this.state.term} />
         <PoseNet />
       </Container>
     );
@@ -27,7 +27,7 @@ class Dashboard extends Component {
   renderPopulationBackPain() {
     return (
       <Container>
-        <YouTube term="back pain stretches" />
+        <YouTube term={this.state.term} />
         <PoseNet />
       </Container>
     );
@@ -35,7 +35,7 @@ class Dashboard extends Component {
   renderPopulationGeneral() {
     return (
       <Container>
-        <YouTube term="stretches" />
+        <YouTube term={this.state.term}  />
         <PoseNet />
       </Container>
     );
@@ -43,7 +43,7 @@ class Dashboard extends Component {
   renderPopulationChallenging() {
     return (
       <Container>
-        <YouTube term="yoga stretches" />
+        <YouTube term={this.state.term}  />
         <PoseNet />
       </Container>
     );
@@ -56,19 +56,23 @@ class Dashboard extends Component {
     console.log(this.state.option)
     switch (this.state.option) {
       case "1":
+      this.setState({option:"stretching for kids"});
        return this.renderPopulationKids();
 
       case "2":
+      this.setState({option:"stretching for office"});
        return this.renderPopulationOffice();
 
       case "3":
+      this.setState({option:"stretching for back pain"});
         return this.renderPopulationBackPain();
         
-
       case "4":
+      this.setState({option:"yoga stretches"});
         return this.renderPopulationChallenging();
 
       case "5":
+      this.setState({option:"stretch"});
        return  this.renderPopulationGeneral();
 
       default:
