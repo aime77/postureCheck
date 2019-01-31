@@ -15,7 +15,6 @@ import posture3 from "../../images/p1-oh.jpg";
 import posture4 from "../../images/p2-ra.jpg";
 import * as calculations from "../../utils/calculations";
 
-
 export default class PoseNet extends React.Component {
   static defaultProps = {
     videoWidth: 600,
@@ -46,7 +45,7 @@ export default class PoseNet extends React.Component {
       scorePoints: 0,
       currentPose: "right tricept stretch",
       loading: true,
-      posture: posture1,
+      posture: posture1
     };
   }
 
@@ -66,6 +65,22 @@ export default class PoseNet extends React.Component {
 
   async componentWillMount() {
     this.net = await posenet.load(this.props.mobileNetArchitecture);
+  }
+
+  async componentDidMount() {
+    await this.setState({ displayCamera: true, showVideo: true });
+
+    try {
+      await this.setupCamera();
+    } catch (e) {
+      throw "This browser does not support video capture, or this device does not have a camera";
+    } finally {
+      this.setState({ loading: false });
+    }
+
+    this.detectPose();
+    let timer = await setInterval(this.tick, 1000);
+    this.setState({ timer });
   }
 
   async setupCamera() {
@@ -145,15 +160,15 @@ export default class PoseNet extends React.Component {
               scorePoints:
                 this.state.scorePoints + calculations.rightTricepStretch(pose)
             });
-    
+
             if (this.state.scorePoints > 5) {
               await this.setState({ scorePoints: 0 });
               await this.setState({ currentPose: "left tricept stretch" });
               await this.setState({ posture: posture1 });
             }
-    
+
             break;
-    
+
           case await "left tricept stretch":
             this.setState({
               scorePoints:
@@ -165,7 +180,7 @@ export default class PoseNet extends React.Component {
               this.setState({ posture: posture2 });
             }
             break;
-    
+
           case await "open heart":
             this.setState({
               scorePoints: this.state.scorePoints + calculations.openHeart(pose)
@@ -176,7 +191,7 @@ export default class PoseNet extends React.Component {
               this.setState({ posture: posture3 });
             }
             break;
-    
+
           case await "raise arms":
             this.setState({
               scorePoints: this.state.scorePoints + calculations.raiseArms(pose)
@@ -189,11 +204,10 @@ export default class PoseNet extends React.Component {
               await this.setState({ counter: 0 });
             }
             break;
-    
+
           default:
         }
       };
-    
 
       switch (algorithm) {
         case "single-pose":
@@ -206,7 +220,7 @@ export default class PoseNet extends React.Component {
 
           poses.push(pose);
 
-         changePose(pose);
+          changePose(pose);
           break;
 
         case "multi-pose":
@@ -261,21 +275,7 @@ export default class PoseNet extends React.Component {
     poseDetectionFrameInner();
   }
 
-  onStartButton = async () => {
-    await this.setState({ displayCamera: true, showVideo: true });
-
-    try {
-      await this.setupCamera();
-    } catch (e) {
-      throw "This browser does not support video capture, or this device does not have a camera";
-    } finally {
-      this.setState({ loading: false });
-    }
-
-    this.detectPose();
-    let timer = await setInterval(this.tick, 1000);
-    this.setState({ timer });
-  };
+  onStartButton = async () => {};
 
   onStopButton = async () => {
     await clearInterval(this.state.timer);
@@ -300,47 +300,20 @@ export default class PoseNet extends React.Component {
     );
     return (
       <div>
-        <Grid columns="equal">
-          <Grid.Row>
-            <Grid.Column>
-              <Stats label="score" value={this.state.scorePoints} />
-            </Grid.Column>
-
-            <Grid.Column>
-              {this.state.counter >= 10 ? (
-                <Stats label="timer" value={`00:${this.state.counter}`} />
-              ) : (
-                <Stats label="timer" value={`00:0${this.state.counter}`} />
-              )}
-            </Grid.Column>
-            <Grid.Column>
-              <Stats label="poses" value={this.state.currentPose} />
-            </Grid.Column>
-          </Grid.Row>
-        </Grid>
-
+    
         {this.state.displayCamera ? (
           <div>
-            <Grid columns="equal">
-              <Grid.Row>
-                <Grid.Column>
-                  <div className="PoseNet">
-                    {loading}
-                    <video playsInline ref={this.getVideo} />
-                    <canvas ref={this.getCanvas} />
-                  </div>
-                  <Buttons onClick={this.onPauseButton} className="pauseButton">
-                    Pause
-                  </Buttons>
-                  <Buttons onClick={this.onStopButton} className="stopButton">
-                    Stop
-                  </Buttons>
-                </Grid.Column>
-                <Grid.Column>
-                  <YouTube />
-                </Grid.Column>
-              </Grid.Row>
-            </Grid>
+            <div className="PoseNet">
+              {loading}
+              <video playsInline ref={this.getVideo} />
+              <canvas ref={this.getCanvas} />
+            </div>
+            <Buttons onClick={this.onPauseButton} className="pauseButton">
+              Pause
+            </Buttons>
+            <Buttons onClick={this.onStopButton} className="stopButton">
+              Stop
+            </Buttons>
           </div>
         ) : (
           <Grid>

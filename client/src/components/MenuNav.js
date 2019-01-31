@@ -27,7 +27,7 @@ class MenuNav extends Component {
     return (
       <Menu>
         <Link to={this.props.auth ? "/dashboard" : "/"}>
-          <Menu.Item className="left brand-logo">Posture Check</Menu.Item>
+          <Menu.Item className="left brand-logo mainFont">Posture Check</Menu.Item>
         </Link>
         <Menu.Item className="right">{this.renderContent()}</Menu.Item>
       </Menu>
@@ -35,7 +35,7 @@ class MenuNav extends Component {
   }
 }
 
-function mapStateToProps({ auth }) {
+const mapStateToProps=({ auth })=> {
   return { auth };
 }
 

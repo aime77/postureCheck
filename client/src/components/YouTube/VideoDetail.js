@@ -1,4 +1,5 @@
 import React from "react";
+import {connect} from "react-redux";
 
 const VideoDetail=({video})=>{
     if(!video){
@@ -20,4 +21,8 @@ const VideoDetail=({video})=>{
   );
 };
 
-export default VideoDetail;
+const mapStateToProps=state=>{
+  return {myVideoSelected: state.video}
+}
+
+export default connect(mapStateToProps)(VideoDetail);

@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { BrowserRouter, Route} from "react-router-dom";
+import { BrowserRouter, Route } from "react-router-dom";
 import { connect } from "react-redux";
 
 import * as actions from "../actions";
@@ -16,17 +16,15 @@ class App extends Component {
   }
   render() {
     return (
-      
-        <BrowserRouter>
-          <div>
-            <MenuNav />
-            <Route exact path="/" component={Home} />
-            <Route exact path="/dashboard" component={Dashboard} />
-            <Route exact path="/youTube" component={YouTube} />
-            <Route exact path="/form" component={FormNew}/>
-          </div>
-        </BrowserRouter>
-     
+      <BrowserRouter>
+        <div>
+          <MenuNav />
+          <Route exact path="/" component={Home} />
+          <Route exact path="/dashboard" component={Dashboard} />
+          <Route exact path="/youTube" component={YouTube} />
+          <Route exact path="/form" component={FormNew} />
+        </div>
+      </BrowserRouter>
     );
   }
 }
