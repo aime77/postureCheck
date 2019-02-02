@@ -208,7 +208,6 @@ class PoseNet extends React.Component {
           default:
         }
       };
-
       switch (algorithm) {
         case "single-pose":
           const pose = await net.estimateSinglePose(
@@ -278,8 +277,6 @@ class PoseNet extends React.Component {
     poseDetectionFrameInner();
   }
 
-  onStartButton = async () => {};
-
   onStopButton = async () => {
     await clearInterval(this.state.timer);
     await this.props.trackScore(0);
@@ -304,29 +301,11 @@ class PoseNet extends React.Component {
     );
     return (
       <div>
-        {this.state.displayCamera ? (
-          <div>
-            <div className="PoseNet">
-              {loading}
-              <video playsInline ref={this.getVideo} />
-              <canvas ref={this.getCanvas} />
-            </div>
-            <Buttons onClick={this.onPauseButton} className="pauseButton">
-              Pause
-            </Buttons>
-            <Buttons onClick={this.onStopButton} className="stopButton">
-              Stop
-            </Buttons>
-          </div>
-        ) : (
-          <Grid>
-            <Grid.Row>
-              <Grid.Column>
-                <StartButton onClick={this.onStartButton} />
-              </Grid.Column>
-            </Grid.Row>
-          </Grid>
-        )}
+        <div className="PoseNet">
+          {loading}
+          <video playsInline ref={this.getVideo} />
+          <canvas ref={this.getCanvas} />
+        </div>
       </div>
     );
   }

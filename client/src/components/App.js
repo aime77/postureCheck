@@ -9,6 +9,7 @@ import Dashboard from "../pages/Dashboard";
 import Home from "../pages/Home";
 import YouTube from "./YouTube";
 import FormNew from "./FormNew";
+import SideMenu from "./SideMenu";
 
 class App extends Component {
   componentDidMount() {
@@ -20,9 +21,11 @@ class App extends Component {
         <div>
           <MenuNav />
           <Route exact path="/" component={Home} />
-          <Route exact path="/dashboard" component={Dashboard} />
+          <Route exact path="/dashboard" component={Dashboard}  />
           <Route exact path="/youTube" component={YouTube} />
           <Route exact path="/form" component={FormNew} />
+          <Route exact path="/messenger" component={FormNew} />
+          <Route exact path="/stats" component={FormNew} />
         </div>
       </BrowserRouter>
     );

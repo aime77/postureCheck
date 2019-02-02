@@ -1,52 +1,70 @@
 import { connect } from "react-redux";
 import React, { Component } from "react";
-import { Container, Button, Grid, Segment } from "semantic-ui-react";
+import { Container, Button, Grid, Segment, Statistic } from "semantic-ui-react";
 import PoseNet from "../components/PoseNet";
 import YouTube from "../components/YouTube";
 import Stats from "../components/Stats";
-import { selectedOption } from "../actions";
+import SideMenu from "../components/SideMenu";
+import { selectedOption, runTimer, stopTimer, trackScore } from "../actions";
 
 class Dashboard extends Component {
   state = { active: 0, option: null };
   renderPointsTrackBoard() {
     return (
-      <Grid columns="equal" centered>
-        <Grid.Row>
-          <Grid.Column>
-            <Stats label="score" value={this.props.score} />
-          </Grid.Column>
-
-          {/* <Grid.Column>
-            {this.state.counter >= 10 ? (
-              <Stats label="timer" value={`00:${this.state.counter}`} />
-            ) : (
-              <Stats label="timer" value={`00:0${this.state.counter}`} />
-            )}
-          </Grid.Column> */}
-          <Grid.Column>
-            <Stats label="" value={this.props.videoSelected} />
-          </Grid.Column>
-        </Grid.Row>
-      </Grid>
+      <Segment inverted>
+        <Statistic.Group widths="four" inverted>
+          <Stats label="score" value={this.props.score} />
+          <Stats label="timer" value={this.props.timer.time} />
+          <Stats label="stretch type" value={this.props.videoSelected} />
+        </Statistic.Group>
+      </Segment>
     );
   }
   render_PoseNet_YouTube() {
     return (
-      <Grid stackable columns={2}>
+      <div style={{ marginTop: "5%" }}>
         {this.renderPointsTrackBoard()}
-        <Grid.Row>
-          <Grid.Column>
-            <Segment>
-              <PoseNet />
-            </Segment>
-          </Grid.Column>
-          <Grid.Column>
-            <Segment>
-              <YouTube />
-            </Segment>
-          </Grid.Column>
-        </Grid.Row>
-      </Grid>
+        <Grid stackable columns={2}>
+          <Grid.Row>
+            <Grid.Column>
+              <Segment>
+                <PoseNet />
+                {this.renderButtons()}
+              </Segment>
+            </Grid.Column>
+            <Grid.Column>
+              <Segment>
+                <YouTube />
+              </Segment>
+            </Grid.Column>
+          </Grid.Row>
+        </Grid>
+      </div>
+    );
+  }
+
+  renderButtons() {
+    return (
+      <div>
+        <Button
+          onClick={this.onStartButton}
+          className="startButton ui button primary"
+        >
+          Start
+        </Button>
+        <Button
+          onClick={this.onPauseButton}
+          className="pauseButton ui button primary"
+        >
+          Pause
+        </Button>
+        <Button
+          onClick={this.onStopButton}
+          className="stopButton ui button primary"
+        >
+          Stop
+        </Button>
+      </div>
     );
   }
 
@@ -70,56 +88,47 @@ class Dashboard extends Component {
                 {video.selection}
               </Button>
             </div>
-            <div className="content" />
+            <div />
           </div>
         </Grid.Column>
       );
     });
   }
 
-  renderDefault() {}
+  onStartButton = async () => {
+    //this.props.active(true);
+    this.props.runTimer();
+  };
 
-  renderSwitch() {
-    switch (this.props.videos) {
-      case "1":
-        this.setState({ option: "stretching for kids" });
-        return this.renderPopulationKids();
+  onStopButton = async () => {
+    await this.props.trackScore(0);
+    this.props.stopTimer();
+  };
 
-      case "2":
-        this.setState({ option: "stretching for office" });
-        return this.renderPopulationOffice();
+  onPauseButon = async (ctx, video) => {};
 
-      case "3":
-        this.setState({ option: "stretching for back pain" });
-        return this.renderPopulationBackPain();
-
-      case "4":
-        this.setState({ option: "yoga stretches" });
-        return this.renderPopulationChallenging();
-
-      case "5":
-        this.setState({ option: "stretch" });
-        return this.renderPopulationGeneral();
-
-      default:
-        return this.renderDefault();
-    }
-  }
   render() {
     return (
-      <Container>
-        <div style={{ textAlign: "center", margin: "5%" }}>
-          <h1>Dashboard</h1>
-        </div>
-        <Grid columns="equal">
-          <Grid.Row>{this.renderList()}</Grid.Row>
-        </Grid>
-        {this.state.active === 0 ? (
-          <h1>"not yet"</h1>
-        ) : (
-          this.render_PoseNet_YouTube()
-        )}
-      </Container>
+      <Grid>
+        <Grid.Row >
+        <Grid.Column>
+          <SideMenu />
+          </Grid.Column>
+          <Container>
+            <div style={{ textAlign: "center", margin: "5%" }}>
+              <h1>Dashboard</h1>
+            </div>
+            <Grid columns="equal">
+              <Grid.Row>{this.renderList()}</Grid.Row>
+            </Grid>
+            {this.state.active === 0 ? (
+              <h1>"Click on a type of stretch to start!"</h1>
+            ) : (
+              <div>{this.render_PoseNet_YouTube()}</div>
+            )}
+          </Container>
+        </Grid.Row>
+      </Grid>
     );
   }
 }
@@ -127,10 +136,11 @@ function mapStateProps(state) {
   return {
     videos: state.videoArray,
     score: state.score,
-    videoSelected: state.videoSelected.selection
+    videoSelected: state.videoSelected.selection,
+    timer: state.timer
   };
 }
 export default connect(
   mapStateProps,
-  { selectedOption }
+  { selectedOption, runTimer, trackScore, stopTimer }
 )(Dashboard);

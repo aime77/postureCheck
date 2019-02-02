@@ -1,26 +1,31 @@
-import { TIMER_START , TIMER_STOP, TIMER_TICK} from "../actions/types";
+import { TIMER_START , TIMER_STOP, TIMER_TICK, TIMER_RESET} from "../actions/types";
 
-
-export const startTime=(start=0, action)=>{
-if(action.type===TIMER_START){
-    return action.payload;
+let initialState = {
+  time: 0,
+  start: 0,
+  running: false
 }
 
-return selectedOption;
+export default function timer(state = initialState, action) {
+  switch(action.type) {
+    case TIMER_START: 
+      return {
+        running: true, 
+        time: action.time,
+        start: action.time
+      }
+    case TIMER_STOP:
+      return Object.assign({}, state, {
+        time: action.time,
+        running: false
+      })
+    case TIMER_RESET:
+      return initialState
+    case TIMER_TICK:
+      return Object.assign({}, state, {
+        time: action.time
+      })      
+    default:
+      return state
+  }
 }
-
-
-let timer = null;
-export const start = () => dispatch => {
-  clearInterval(timer);
-  timer = setInterval(() => dispatch(tick()), 1000);
-  dispatch({ type: TIMER_START });
-  dispatch(tick());
-};
-
-export const tick = () => ({ type: TIMER_TICK });
-
-export const stop = () => {
-  clearInterval(timer);
-  return { type: TIMER_STOP };
-};

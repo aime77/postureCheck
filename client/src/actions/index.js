@@ -7,6 +7,7 @@ import {
   TIMER_TICK,
   TIMER_START,
   TIMER_STOP,
+  TIMER_RESET,
   VIDEO_TYPE_SELECTED,
   SEARCH_SELECTED
 } from "./types";
@@ -32,7 +33,7 @@ export const trackScore = setScore => {
 };
 
 let timer = null;
-export const start = () => dispatch => {
+export const startTimer = () => dispatch => {
   clearInterval(timer);
   timer = setInterval(() => dispatch(tick()), 1000);
   dispatch({ type: TIMER_START });
@@ -41,7 +42,7 @@ export const start = () => dispatch => {
 
 export const tick = () => ({ type: TIMER_TICK });
 
-export const stop = () => {
+export const stopTimer = () => {
   clearInterval(timer);
   return { type: TIMER_STOP };
 };
@@ -68,3 +69,47 @@ export const youTubeSearch = videos => {
     }
   };
 };
+
+//timer
+
+let start = () => {
+  return {
+    type: TIMER_START,
+    time: performance.now()
+  }
+}
+
+let time = () => {
+  return {
+    type: TIMER_TICK,
+    time: performance.now()
+  }
+}
+
+let reset = () => {
+  return {
+    type: TIMER_RESET
+  }
+}
+
+let stop = () => {
+  return {
+    type: TIMER_STOP,
+    time: performance.now()
+  }
+}
+
+
+let INTERVAL =1000
+export let runTimer = () => {
+  return (dispatch, getState) => {
+    dispatch(start());
+    let timer = () => {
+      if (getState().running) {
+        dispatch(time());
+        setTimeout(timer, INTERVAL);
+      }
+    }
+    timer();
+  }
+}
