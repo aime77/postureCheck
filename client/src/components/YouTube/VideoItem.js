@@ -1,16 +1,18 @@
 import React from "react";
-import "./VideoItem.css"
+import "./VideoItem.css";
 
 const VideoItem = ({ videos, onVideoSelect }) => {
   //props.videos
   return (
-    <div onClick={()=>onVideoSelect(videos)} className="video-item item">
+    <div onClick={()=>onVideoSelect(videos)} className="item card">
       <img className="ui image" src={videos.snippet.thumbnails.medium.url} />
-      <div className="content">
-        <div className="header">{videos.snippet.title}</div>
-      </div>
+     
+        <div className="header extra">{videos.snippet.title}</div>
+        <div className="header extra">{videos.contentDetails.duration}</div>
+  
     </div>
   );
 };
 
 export default VideoItem;
+

@@ -5,17 +5,17 @@ import "./posenet.css";
 import StartButton from "../StartButton";
 import Buttons from "../Buttons";
 
-import YouTube from "../YouTube";
-
-import Stats from "../Stats";
 import { Grid } from "semantic-ui-react";
 import posture1 from "../../images/p1-oh.jpg";
 import posture2 from "../../images/p2-ra.jpg";
 import posture3 from "../../images/p1-oh.jpg";
 import posture4 from "../../images/p2-ra.jpg";
 import * as calculations from "../../utils/calculations";
+import { calculationVideo } from "../../utils/youTubeCalculations";
+import { connect } from "react-redux";
+import { trackScore } from "../../actions";
 
-export default class PoseNet extends React.Component {
+class PoseNet extends React.Component {
   static defaultProps = {
     videoWidth: 600,
     videoHeight: 500,
@@ -220,7 +220,10 @@ export default class PoseNet extends React.Component {
 
           poses.push(pose);
 
-          changePose(pose);
+          const result = await calculationVideo(pose);
+          const addingScore = await (this.props.score + result);
+          await this.props.trackScore(addingScore);
+
           break;
 
         case "multi-pose":
@@ -279,7 +282,8 @@ export default class PoseNet extends React.Component {
 
   onStopButton = async () => {
     await clearInterval(this.state.timer);
-    await this.setState({ counter: 0, displayCamera: false, showVideo: false });
+    await this.props.trackScore(0);
+    await this.setState({ displayCamera: false, showVideo: false });
   };
 
   onPauseButon = async (ctx, video) => {
@@ -300,7 +304,6 @@ export default class PoseNet extends React.Component {
     );
     return (
       <div>
-    
         {this.state.displayCamera ? (
           <div>
             <div className="PoseNet">
@@ -328,3 +331,13 @@ export default class PoseNet extends React.Component {
     );
   }
 }
+
+function mapStateProps(state) {
+  return {
+    score: state.score
+  };
+}
+export default connect(
+  mapStateProps,
+  { trackScore }
+)(PoseNet);

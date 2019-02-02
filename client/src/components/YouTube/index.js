@@ -34,13 +34,15 @@ class YouTube extends React.Component {
 
   render() {
     return (
-      <div>
+      <div className="youTube">
         <div className="ui grid">
           <div className="ui row">
-            <div className="eleven wide column">
+            <div className="sixteen column">
               <VideoDetail video={this.state.selectedVideo} />
             </div>
-            <div className="five wide column">
+          </div>
+          <div className="ui row">
+            <div className="sixteen column">
               <VideoList
                 onVideoSelect={this.onVideoSelect}
                 videos={this.state.videos}

@@ -3,7 +3,6 @@ import youtube from "./api/youtube";
 import {
   FETCH_USER,
   TRACK_SCORE,
-  SET_TERM,
   SET_TIMER,
   TIMER_TICK,
   TIMER_START,
@@ -24,16 +23,12 @@ export const submitForm = (values, history) => async dispatch => {
   dispatch({ type: FETCH_USER, payload: response.data });
 };
 
-export const setTerm = term => async dispatch => {
-  dispatch({ type: SET_TERM, payload: 90 });
-};
-
 export const setTimer = () => async dispatch => {
   dispatch({ type: SET_TIMER, payload: 0 });
 };
 
-export const trackScore = () => async dispatch => {
-  dispatch({ type: TRACK_SCORE, payload: 0 });
+export const trackScore = setScore => {
+  return { type: TRACK_SCORE, payload: setScore };
 };
 
 let timer = null;

@@ -1,14 +1,14 @@
 export const calculationVideo = async pose => {
-  const data = pose.keypoints;
-  const sumScoresArray = [];
-
-  await data.forEach((val, index) => {
-    index > 4 && val.score > 95.2
-      ? sumScoresArray.push(val.score)
-      : sumScoresArray.push(0);
+  let array = pose.keypoints;
+  const result = array.filter((value, index) => {
+    return value.score > 0.9 && index > 6;
   });
 
-  const reducer = async (accumulator, currentValue) =>
-    accumulator + currentValue;
-  return await sumScoresArray.reduce(reducer);
+  const resultSum = await result.reduce((acc, currValue, currIndex, array) => {
+    return acc + currValue.score;
+  }, 0);
+
+  const avg = await (Math.round(resultSum / result.length)*100)/100;
+  if (isNaN(avg)) return await 0;
+  else return await avg / 100;
 };

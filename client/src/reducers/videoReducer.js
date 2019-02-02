@@ -10,7 +10,7 @@ return[
 ]
 }
 
-export const selectedVideoType=(selectedOption=null, action)=>{
+export const selectedVideoType=(selectedOption="", action)=>{
 if(action.type===VIDEO_TYPE_SELECTED){
     return action.payload;
 }
