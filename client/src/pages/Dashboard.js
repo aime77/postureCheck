@@ -5,10 +5,15 @@ import PoseNet from "../components/PoseNet";
 import YouTube from "../components/YouTube";
 import Stats from "../components/Stats";
 import SideMenu from "../components/SideMenu";
-import { selectedOption, runTimer, stopTimer, trackScore } from "../actions";
+import {
+  selectedOption,
+  runTimer,
+  stopTimer,
+  trackScore,
+  checkActive
+} from "../actions";
 
 class Dashboard extends Component {
-  state = { active: 0, option: null };
   renderPointsTrackBoard() {
     return (
       <Segment inverted>
@@ -75,8 +80,8 @@ class Dashboard extends Component {
   renderList() {
     return this.props.videos.map(video => {
       return (
-        <Grid.Column>
-          <div className="selection" key={video.selection}>
+        <Grid.Column key={video.setKey}>
+          <div className="selection">
             <div className="right floated ">
               <Button
                 className="ui button primary"
@@ -96,13 +101,14 @@ class Dashboard extends Component {
   }
 
   onStartButton = async () => {
-    //this.props.active(true);
+    this.props.checkActive("2");
     this.props.runTimer();
   };
 
   onStopButton = async () => {
     await this.props.trackScore(0);
-    this.props.stopTimer();
+    await this.props.checkActive("3");
+    await this.props.stopTimer();
   };
 
   onPauseButon = async (ctx, video) => {};
@@ -110,9 +116,9 @@ class Dashboard extends Component {
   render() {
     return (
       <Grid>
-        <Grid.Row >
-        <Grid.Column>
-          <SideMenu />
+        <Grid.Row>
+          <Grid.Column>
+            <SideMenu />
           </Grid.Column>
           <Container>
             <div style={{ textAlign: "center", margin: "5%" }}>
@@ -122,7 +128,9 @@ class Dashboard extends Component {
               <Grid.Row>{this.renderList()}</Grid.Row>
             </Grid>
             {this.state.active === 0 ? (
-              <h1>"Click on a type of stretch to start!"</h1>
+              <h1 style={{ textAlign: "center", margin: "2%" }}>
+                "Click on a type of stretch to start!"
+              </h1>
             ) : (
               <div>{this.render_PoseNet_YouTube()}</div>
             )}
@@ -132,15 +140,20 @@ class Dashboard extends Component {
     );
   }
 }
-function mapStateProps(state) {
+const mapStateProps=(state)=> {
+  console.log(state);
   return {
     videos: state.videoArray,
     score: state.score,
     videoSelected: state.videoSelected.selection,
-    timer: state.timer
+    timer: state.timer,
+    activateTimer: state.timer.running,
+    active: state.active
   };
 }
 export default connect(
   mapStateProps,
-  { selectedOption, runTimer, trackScore, stopTimer }
+  { selectedOption, runTimer, trackScore, stopTimer, checkActive }
 )(Dashboard);
+
+

@@ -1,7 +1,8 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import { Button, Menu } from "semantic-ui-react";
+import { Menu } from "semantic-ui-react";
 import { Link } from "react-router-dom";
+import ButtonAnimated from "ButtonAnimated";
 
 class MenuNav extends Component {
   renderContent() {
@@ -10,24 +11,29 @@ class MenuNav extends Component {
         return;
       case false:
         return (
-          <Button href="/auth/google">
-            Log-in With Google <i class="google icon big" />
-          </Button>
+          <ButtonAnimated
+            href="/auth/google"
+            buttonVisible="Log-in With Google"
+            buttonHiddenIconName="google"
+          />
         );
       default:
         return (
-          <Button href="/api/logout">
-            <i className="sign-out icon big">Log-out</i>
-          </Button>
+          <ButtonAnimated
+            href="/api/logout"
+            buttonVisible="Logout"
+            buttonHiddenIconName="arrow alternate circle right"
+          />
         );
     }
   }
   render() {
-    console.log(this.props);
     return (
       <Menu>
         <Link to={this.props.auth ? "/dashboard" : "/"}>
-          <Menu.Item className="left brand-logo mainFont">Posture Check</Menu.Item>
+          <Menu.Item className="left brand-logo mainFont">
+            Posture Check
+          </Menu.Item>
         </Link>
         <Menu.Item className="right">{this.renderContent()}</Menu.Item>
       </Menu>
@@ -35,8 +41,8 @@ class MenuNav extends Component {
   }
 }
 
-const mapStateToProps=({ auth })=> {
+const mapStateToProps = ({ auth }) => {
   return { auth };
-}
+};
 
 export default connect(mapStateToProps)(MenuNav);

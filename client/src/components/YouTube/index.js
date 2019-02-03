@@ -1,7 +1,7 @@
 import React from "react";
 import youtube from "../../actions/api/youtube";
 import VideoList from "./VideoList";
-import VideoDetail from "./VideoDetail.js";
+import VideoDetail from "./VideoDetail";
 import { connect } from "react-redux";
 
 class YouTube extends React.Component {

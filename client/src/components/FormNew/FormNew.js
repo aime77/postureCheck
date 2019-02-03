@@ -4,7 +4,6 @@ import _ from "lodash";
 import { Button, Form, Container } from "semantic-ui-react";
 import { reduxForm, Field } from "redux-form";
 import FieldForm from "./Field";
-
 import { Link } from "react-router-dom";
 import fieldsArray from "./fieldsArray";
 
@@ -14,6 +13,7 @@ class FormNew extends Component {
       return (
         <Form.Group>
           <Field
+            style={{ color: "black" }}
             key={name}
             component={FieldForm}
             type="text"
@@ -28,9 +28,7 @@ class FormNew extends Component {
     return (
       <div>
         <Container>
-          <Form
-          onSubmit={this.props.handleSubmit(this.props.onFormSubmit)}
-          >
+          <Form onSubmit={this.props.handleSubmit(this.props.onFormSubmit)}>
             {this.renderFields()}
             <Link to="/dashboard">
               <Button>Cancel</Button>

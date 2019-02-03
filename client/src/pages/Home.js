@@ -9,7 +9,7 @@ const Home = () => {
       <div style={{ textAlign: "center" }}>
         <h1>Posture Check!</h1>
       </div>
-      <Grid  centered>
+      <Grid centered>
         <Grid.Row>
           <Grid.Column width={10}>
             <Image src={posture1} />

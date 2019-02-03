@@ -16,7 +16,6 @@ export default class SideMenu extends Component {
           <Menu.Item
             name="user"
             active={activeItem === "user"}
-            onClick={this.handleItemClick}
           >
             <Icon name="user" />
             Profile Info
@@ -26,17 +25,16 @@ export default class SideMenu extends Component {
           <Menu.Item
             name="pie graph"
             active={activeItem === "pie graph"}
-            onClick={this.handleItemClick}
           >
             <Icon name="pie graph" />
             Statistics
           </Menu.Item>
         </Link>
+
         <Link to="/messenger">
           <Menu.Item
             name="comments"
             active={activeItem === "comments"}
-            onClick={this.handleItemClick}
           >
             <Icon name="comments" />
             Messenger

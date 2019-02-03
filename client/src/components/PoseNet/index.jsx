@@ -1,11 +1,8 @@
 import * as posenet from "@tensorflow-models/posenet";
 import * as React from "react";
 import { isMobile, drawKeypoints, drawSkeleton } from "./utils";
+import { Button } from "semantic-ui-react";
 import "./posenet.css";
-import StartButton from "../StartButton";
-import Buttons from "../Buttons";
-
-import { Grid } from "semantic-ui-react";
 import posture1 from "../../images/p1-oh.jpg";
 import posture2 from "../../images/p2-ra.jpg";
 import posture3 from "../../images/p1-oh.jpg";
@@ -13,7 +10,7 @@ import posture4 from "../../images/p2-ra.jpg";
 import * as calculations from "../../utils/calculations";
 import { calculationVideo } from "../../utils/youTubeCalculations";
 import { connect } from "react-redux";
-import { trackScore } from "../../actions";
+import { trackScore, checkActive } from "../../actions";
 
 class PoseNet extends React.Component {
   static defaultProps = {
@@ -42,7 +39,6 @@ class PoseNet extends React.Component {
       displayCamera: false,
       timer: null,
       counter: 0,
-      scorePoints: 0,
       currentPose: "right tricept stretch",
       loading: true,
       posture: posture1
@@ -73,7 +69,7 @@ class PoseNet extends React.Component {
     try {
       await this.setupCamera();
     } catch (e) {
-      throw "This browser does not support video capture, or this device does not have a camera";
+      throw e;
     } finally {
       this.setState({ loading: false });
     }
@@ -218,11 +214,11 @@ class PoseNet extends React.Component {
           );
 
           poses.push(pose);
-
-          const result = await calculationVideo(pose);
-          const addingScore = await (this.props.score + result);
-          await this.props.trackScore(addingScore);
-
+         
+            const result = await calculationVideo(pose);
+            const addingScore = await (this.props.score + result);
+            await this.props.trackScore(addingScore);
+          
           break;
 
         case "multi-pose":
@@ -280,17 +276,21 @@ class PoseNet extends React.Component {
   onStopButton = async () => {
     await clearInterval(this.state.timer);
     await this.props.trackScore(0);
+    const test = this.video.srcObject.getTracks()[0];
+    test.stop();
     await this.setState({ displayCamera: false, showVideo: false });
   };
 
-  onPauseButon = async (ctx, video) => {
+  onPauseButon = async () => {
     await clearInterval(this.state.timer);
     const { videoWidth, videoHeight } = this.props;
     const canvas = this.canvas;
+    const ctx = canvas.getContext("2d");
 
     canvas.width = videoWidth;
     canvas.height = videoHeight;
-    ctx.drawImage(video, 0, 0, videoWidth, videoHeight); //*for pause
+    ctx.drawImage(this.video, 0, 0, videoWidth, videoHeight); //*for pause
+    this.video.addClass("hide");
   };
 
   render() {
@@ -311,12 +311,14 @@ class PoseNet extends React.Component {
   }
 }
 
-function mapStateProps(state) {
+const mapStateProps=(state)=> {
+  console.log(state);
   return {
-    score: state.score
+    score: state.score,
+    active: state.active
   };
 }
 export default connect(
   mapStateProps,
-  { trackScore }
+  { trackScore, checkActive }
 )(PoseNet);

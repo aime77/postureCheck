@@ -3,13 +3,11 @@ import { BrowserRouter, Route } from "react-router-dom";
 import { connect } from "react-redux";
 
 import * as actions from "../actions";
-
 import MenuNav from "./MenuNav";
 import Dashboard from "../pages/Dashboard";
 import Home from "../pages/Home";
 import YouTube from "./YouTube";
-import FormNew from "./FormNew";
-import SideMenu from "./SideMenu";
+import ModalProfile from "./ModalProfile";
 
 class App extends Component {
   componentDidMount() {
@@ -21,11 +19,11 @@ class App extends Component {
         <div>
           <MenuNav />
           <Route exact path="/" component={Home} />
-          <Route exact path="/dashboard" component={Dashboard}  />
+          <Route exact path="/dashboard" component={Dashboard} />
           <Route exact path="/youTube" component={YouTube} />
-          <Route exact path="/form" component={FormNew} />
-          <Route exact path="/messenger" component={FormNew} />
-          <Route exact path="/stats" component={FormNew} />
+          <Route exact path="/form" component={ModalProfile} />
+          <Route exact path="/messenger" component={ModalProfile} />
+          <Route exact path="/stats" component={ModalProfile} />
         </div>
       </BrowserRouter>
     );

@@ -2,11 +2,11 @@ import { VIDEO_TYPE_SELECTED, SEARCH_SELECTED} from "../actions/types";
 
 export const videoReducer=()=>{
 return[
-    { selection: "Streches for Kids", durationMax: "10:00" },
-    { selection: "Stretches for the Office", duration: "5:00" },
-    { selection: "Stretches for Back Pain", duration: "7:00" },
-    { selection: "Yoga Stretches", duration: "7:00" },
-    { selection: "General Stretches", duration: null },
+    { selection: "Streches for Kids", setKey: "1" },
+    { selection: "Stretches for the Office", setKey: "2" },
+    { selection: "Stretches for Back Pain", setKey: "3" },
+    { selection: "Yoga Stretches", setKey: "4" },
+    { selection: "General Stretches", setKey: "5" },
 ]
 }
 

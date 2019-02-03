@@ -1,5 +1,5 @@
 import React from "react";
-import { Segment, Statistic } from "semantic-ui-react";
+import { Statistic } from "semantic-ui-react";
 
 const Stats = ({ value, label }) => (
   <Statistic style={{overflow:"hidden", width:"50%"}} >
