@@ -15,7 +15,7 @@ import {
   FETCH_POSTS
 } from "./types";
 
-//actione creator for api call
+//action creator for api call
 export const fetchUser = () => async dispatch => {
   const response = await axios.get("/api/current_user");
   dispatch({ type: FETCH_USER, payload: response.data });
@@ -40,6 +40,11 @@ export const saveScore = values => async dispatch => {
   console.log(values);
   console.log("testSave")
   const response = await axios.post("/api/scores", values);
+  dispatch({ type: FETCH_USER, payload: response.data });
+};
+
+export const profileInfo = () => async dispatch => {
+  const response = await axios.get("/api/profile");
   dispatch({ type: FETCH_USER, payload: response.data });
 };
 

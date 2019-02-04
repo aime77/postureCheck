@@ -162,7 +162,7 @@ class Dashboard extends Component {
             <div style={{ textAlign: "center", margin: "5%" }}>
               <h1>Dashboard</h1>
             </div>
-            
+
             <Grid columns="equal" centerted>
               <Grid.Row>{this.renderList()}</Grid.Row>
             </Grid>

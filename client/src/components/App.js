@@ -1,13 +1,14 @@
 import React, { Component } from "react";
 import { BrowserRouter, Route } from "react-router-dom";
 import { connect } from "react-redux";
-
 import * as actions from "../actions";
-import MenuNav from "./MenuNav";
+
 import Dashboard from "../pages/Dashboard";
 import Home from "../pages/Home";
+import ModalProfile from "../pages/ModalProfile";
+
+import MenuNav from "./MenuNav";
 import YouTube from "./YouTube";
-import ModalProfile from "./ModalProfile";
 import GraphsD3 from "./GraphsD3";
 
 class App extends Component {
