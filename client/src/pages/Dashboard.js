@@ -10,10 +10,12 @@ import {
   runTimer,
   stopTimer,
   trackScore,
-  checkActive
+  checkActive,
+  saveScore
 } from "../actions";
 
 class Dashboard extends Component {
+  state = { active: 0, contentToSave: false };
   renderPointsTrackBoard() {
     return (
       <Segment inverted>
@@ -28,12 +30,34 @@ class Dashboard extends Component {
   render_PoseNet_YouTube() {
     return (
       <div style={{ marginTop: "5%" }}>
-        {this.renderPointsTrackBoard()}
-        <Grid stackable columns={2}>
+        <Grid celled>
           <Grid.Row>
+            <Grid.Column>{this.renderPointsTrackBoard()}</Grid.Column>
+          </Grid.Row>
+          <Grid.Row columns={2}>
             <Grid.Column>
               <Segment>
                 <PoseNet />
+                {this.state.contentToSave ? (
+                  <div>
+                    <h3>{this.props.score}</h3>
+                    <Button
+                      onClick={() =>
+                        this.props.saveScore({
+                          score: this.props.score,
+                          time: this.props.timer.time,
+                          videoSelected: this.props.videoSelected
+                        })
+                      }
+                      className="stopButton ui button primary"
+                    >
+                      Save
+                    </Button>
+                  </div>
+                ) : (
+                  <div />
+                )}
+
                 {this.renderButtons()}
               </Segment>
             </Grid.Column>
@@ -50,25 +74,31 @@ class Dashboard extends Component {
 
   renderButtons() {
     return (
-      <div>
-        <Button
-          onClick={this.onStartButton}
-          className="startButton ui button primary"
-        >
-          Start
-        </Button>
-        <Button
-          onClick={this.onPauseButton}
-          className="pauseButton ui button primary"
-        >
-          Pause
-        </Button>
-        <Button
-          onClick={this.onStopButton}
-          className="stopButton ui button primary"
-        >
-          Stop
-        </Button>
+      <div style={{ marginTop: "2%" }}>
+        {this.props.active === "on" ? (
+          <div>
+            {" "}
+            <Button
+              onClick={this.onPauseButton}
+              className="pauseButton ui button primary"
+            >
+              Pause
+            </Button>{" "}
+            <Button
+              onClick={this.onStopButton}
+              className="stopButton ui button primary"
+            >
+              Stop
+            </Button>
+          </div>
+        ) : (
+          <Button
+            onClick={this.onStartButton}
+            className="startButton ui button primary"
+          >
+            Start
+          </Button>
+        )}
       </div>
     );
   }
@@ -82,7 +112,7 @@ class Dashboard extends Component {
       return (
         <Grid.Column key={video.setKey}>
           <div className="selection">
-            <div className="right floated ">
+            <div className="centered">
               <Button
                 className="ui button primary"
                 onClick={() => {
@@ -101,22 +131,30 @@ class Dashboard extends Component {
   }
 
   onStartButton = async () => {
-    this.props.checkActive("2");
-    this.props.runTimer();
+    await this.props.trackScore(0);
+    await this.props.checkActive("on");
+    await this.props.runTimer();
   };
 
   onStopButton = async () => {
-    await this.props.trackScore(0);
-    await this.props.checkActive("3");
+    await this.props.checkActive("out");
     await this.props.stopTimer();
+    await this.setState({ contentToSave: true });
   };
 
-  onPauseButon = async (ctx, video) => {};
+  onPauseButon = async () => {
+    await this.props.checkActive("pause");
+    await this.props.pauseTimer();
+  };
+
+  onSaveButon = async () => {
+    await this.props.checkActive("pause");
+  };
 
   render() {
     return (
       <Grid>
-        <Grid.Row>
+        <Grid.Row style={{ paddingTop: "0" }}>
           <Grid.Column>
             <SideMenu />
           </Grid.Column>
@@ -124,15 +162,16 @@ class Dashboard extends Component {
             <div style={{ textAlign: "center", margin: "5%" }}>
               <h1>Dashboard</h1>
             </div>
-            <Grid columns="equal">
+            
+            <Grid columns="equal" centerted>
               <Grid.Row>{this.renderList()}</Grid.Row>
             </Grid>
             {this.state.active === 0 ? (
-              <h1 style={{ textAlign: "center", margin: "2%" }}>
-                "Click on a type of stretch to start!"
+              <h1 style={{ textAlign: "center", margin: "5%" }}>
+                Click on a type of stretch to start!
               </h1>
             ) : (
-              <div>{this.render_PoseNet_YouTube()}</div>
+              this.render_PoseNet_YouTube()
             )}
           </Container>
         </Grid.Row>
@@ -140,8 +179,7 @@ class Dashboard extends Component {
     );
   }
 }
-const mapStateProps=(state)=> {
-  console.log(state);
+const mapStateProps = state => {
   return {
     videos: state.videoArray,
     score: state.score,
@@ -150,10 +188,8 @@ const mapStateProps=(state)=> {
     activateTimer: state.timer.running,
     active: state.active
   };
-}
+};
 export default connect(
   mapStateProps,
-  { selectedOption, runTimer, trackScore, stopTimer, checkActive }
+  { selectedOption, runTimer, trackScore, stopTimer, checkActive, saveScore }
 )(Dashboard);
-
-

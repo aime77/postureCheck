@@ -8,6 +8,7 @@ import Dashboard from "../pages/Dashboard";
 import Home from "../pages/Home";
 import YouTube from "./YouTube";
 import ModalProfile from "./ModalProfile";
+import GraphsD3 from "./GraphsD3";
 
 class App extends Component {
   componentDidMount() {
@@ -23,7 +24,7 @@ class App extends Component {
           <Route exact path="/youTube" component={YouTube} />
           <Route exact path="/form" component={ModalProfile} />
           <Route exact path="/messenger" component={ModalProfile} />
-          <Route exact path="/stats" component={ModalProfile} />
+          <Route exact path="/stats" component={GraphsD3} />
         </div>
       </BrowserRouter>
     );

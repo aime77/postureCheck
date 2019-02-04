@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 import { Menu } from "semantic-ui-react";
 import { Link } from "react-router-dom";
-import ButtonAnimated from "ButtonAnimated";
+import ButtonAnimated from "./ButtonAnimated";
 
 class MenuNav extends Component {
   renderContent() {

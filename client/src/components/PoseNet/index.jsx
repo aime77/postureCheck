@@ -1,13 +1,7 @@
 import * as posenet from "@tensorflow-models/posenet";
 import * as React from "react";
 import { isMobile, drawKeypoints, drawSkeleton } from "./utils";
-import { Button } from "semantic-ui-react";
 import "./posenet.css";
-import posture1 from "../../images/p1-oh.jpg";
-import posture2 from "../../images/p2-ra.jpg";
-import posture3 from "../../images/p1-oh.jpg";
-import posture4 from "../../images/p2-ra.jpg";
-import * as calculations from "../../utils/calculations";
 import { calculationVideo } from "../../utils/youTubeCalculations";
 import { connect } from "react-redux";
 import { trackScore, checkActive } from "../../actions";
@@ -30,18 +24,14 @@ class PoseNet extends React.Component {
     imageScaleFactor: 0.5,
     skeletonColor: "aqua",
     skeletonLineWidth: 2,
-    loadingText: "Loading pose detector..."
+    loadingText: "Loading camera..."
   };
 
   constructor(props) {
     super(props, PoseNet.defaultProps);
     this.state = {
       displayCamera: false,
-      timer: null,
-      counter: 0,
-      currentPose: "right tricept stretch",
-      loading: true,
-      posture: posture1
+      loading: true
     };
   }
 
@@ -53,19 +43,12 @@ class PoseNet extends React.Component {
     this.video = elem;
   };
 
-  tick = () => {
-    this.setState({
-      counter: this.state.counter + 1
-    });
-  };
-
   async componentWillMount() {
     this.net = await posenet.load(this.props.mobileNetArchitecture);
   }
 
   async componentDidMount() {
     await this.setState({ displayCamera: true, showVideo: true });
-
     try {
       await this.setupCamera();
     } catch (e) {
@@ -73,7 +56,6 @@ class PoseNet extends React.Component {
     } finally {
       this.setState({ loading: false });
     }
-
     this.detectPose();
     let timer = await setInterval(this.tick, 1000);
     this.setState({ timer });
@@ -117,10 +99,8 @@ class PoseNet extends React.Component {
     const { videoWidth, videoHeight } = this.props;
     const canvas = this.canvas;
     const ctx = canvas.getContext("2d");
-
     canvas.width = videoWidth;
     canvas.height = videoHeight;
-
     this.poseDetectionFrame(ctx);
   }
 
@@ -149,61 +129,6 @@ class PoseNet extends React.Component {
     const poseDetectionFrameInner = async () => {
       let poses = [];
 
-      const changePose = async pose => {
-        switch (this.state.currentPose) {
-          case "right tricept stretch":
-            await this.setState({
-              scorePoints:
-                this.state.scorePoints + calculations.rightTricepStretch(pose)
-            });
-
-            if (this.state.scorePoints > 5) {
-              await this.setState({ scorePoints: 0 });
-              await this.setState({ currentPose: "left tricept stretch" });
-              await this.setState({ posture: posture1 });
-            }
-
-            break;
-
-          case await "left tricept stretch":
-            this.setState({
-              scorePoints:
-                this.state.scorePoints + calculations.leftTricepStretch(pose)
-            });
-            if (this.state.scorePoints > 6.8) {
-              this.setState({ scorePoints: 0 });
-              this.setState({ currentPose: "open heart" });
-              this.setState({ posture: posture2 });
-            }
-            break;
-
-          case await "open heart":
-            this.setState({
-              scorePoints: this.state.scorePoints + calculations.openHeart(pose)
-            });
-            if (this.state.scorePoints > 5.2) {
-              this.setState({ scorePoints: 0 });
-              this.setState({ currentPose: "raise arms" });
-              this.setState({ posture: posture3 });
-            }
-            break;
-
-          case await "raise arms":
-            this.setState({
-              scorePoints: this.state.scorePoints + calculations.raiseArms(pose)
-            });
-            if (this.state.scorePoints > 9.17) {
-              this.setState({ scorePoints: 0 });
-              this.setState({ currentPose: null });
-              this.setState({ posture: posture4 });
-              await clearInterval(this.state.timer);
-              await this.setState({ counter: 0 });
-            }
-            break;
-
-          default:
-        }
-      };
       switch (algorithm) {
         case "single-pose":
           const pose = await net.estimateSinglePose(
@@ -214,11 +139,16 @@ class PoseNet extends React.Component {
           );
 
           poses.push(pose);
-         
+          //score counters
+          if (this.props.active === "on") {
+            console.log("points cal", this.props.active);
             const result = await calculationVideo(pose);
             const addingScore = await (this.props.score + result);
             await this.props.trackScore(addingScore);
-          
+          }
+          if (this.props.active === "out") {
+            await this.onStopButton();
+          }
           break;
 
         case "multi-pose":
@@ -274,10 +204,11 @@ class PoseNet extends React.Component {
   }
 
   onStopButton = async () => {
+    const stopVideo = await this.video.srcObject.getTracks()[0];
+    await stopVideo.stop();
     await clearInterval(this.state.timer);
     await this.props.trackScore(0);
-    const test = this.video.srcObject.getTracks()[0];
-    test.stop();
+
     await this.setState({ displayCamera: false, showVideo: false });
   };
 
@@ -301,8 +232,8 @@ class PoseNet extends React.Component {
     );
     return (
       <div>
+        {loading}
         <div className="PoseNet">
-          {loading}
           <video playsInline ref={this.getVideo} />
           <canvas ref={this.getCanvas} />
         </div>
@@ -311,13 +242,12 @@ class PoseNet extends React.Component {
   }
 }
 
-const mapStateProps=(state)=> {
-  console.log(state);
+const mapStateProps = state => {
   return {
     score: state.score,
     active: state.active
   };
-}
+};
 export default connect(
   mapStateProps,
   { trackScore, checkActive }

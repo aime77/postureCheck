@@ -23,7 +23,8 @@ app.use(passport.initialize());
 app.use(passport.session());
 
 require("./routes/authRoutes")(app);
-require("./routes/scoresRoute")
+require("./routes/scoresRoutes")(app);
+require("./routes/profileRoutes")(app);
 
 if (process.env.NODE_ENV === "production") {
   app.use(express.static("client/build"));

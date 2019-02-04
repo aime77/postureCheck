@@ -1,5 +1,6 @@
 import axios from "axios";
 import youtube from "./api/youtube";
+
 import {
   FETCH_USER,
   TRACK_SCORE,
@@ -10,7 +11,8 @@ import {
   TIMER_RESET,
   VIDEO_TYPE_SELECTED,
   SEARCH_SELECTED,
-  CHECK_ACTIVE
+  CHECK_ACTIVE,
+  FETCH_POSTS
 } from "./types";
 
 //actione creator for api call
@@ -19,11 +21,32 @@ export const fetchUser = () => async dispatch => {
   dispatch({ type: FETCH_USER, payload: response.data });
 };
 
+export const handleToken=token=>async dispatch=>{
+  const response=await axios.post("/api/stripe", token);
+  dispatch({type:FETCH_USER, payload:response.data})
+}
 //action creator for form submission
 export const submitForm = (values, history) => async dispatch => {
-  const response = await axios.post("/api/forms", values);
-  history.push("/dashboard");
+  console.log(values);
+  return await axios.put("/api/forms/", values).then(response => {
+    console.log(response) 
+    history.push("/dashboard");
+ dispatch({ type: FETCH_USER, payload: response.data });
+});
+};
+
+//action creator to save score information
+export const saveScore = values => async dispatch => {
+  console.log(values);
+  console.log("testSave")
+  const response = await axios.post("/api/scores", values);
   dispatch({ type: FETCH_USER, payload: response.data });
+};
+
+//get data from
+export const fetchPost = () => async dispatch => {
+  const response = await axios.get("/postureHealthFacts");
+  dispatch({ type: FETCH_POSTS, payload: response });
 };
 
 //action creator to select video

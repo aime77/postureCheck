@@ -5,7 +5,9 @@ const ScoreSchema = new Schema({
   score: Number,
   video: String,
   category: String,
-  time: Date
+  time: String,
+  date: Date,
+  _user: { type: Schema.Types.ObjectId, ref: "User" }
 });
 
 const Score = mongoose.model("Score", ScoreSchema);

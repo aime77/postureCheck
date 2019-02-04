@@ -8,3 +8,4 @@ export const TIMER_RESET="timer-reset";
 export const VIDEO_TYPE_SELECTED= "video-type-selected";
 export const SEARCH_SELECTED="search-selected";
 export const CHECK_ACTIVE="check-active";
+export const FETCH_POSTS="check-posts";

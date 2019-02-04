@@ -4,6 +4,7 @@ import React, { Component } from "react";
 import { reduxForm } from "redux-form";
 import FormNew from "./FormNew";
 import Review from "./Review";
+import "./styleForms.css"
 
 class FormButton extends Component {
   state = { reviewCheck: false };

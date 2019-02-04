@@ -1,0 +1,19 @@
+.dropdownSelector {
+  height: 20px;
+}
+
+i.dropdown.icon {
+  max-height: 2px;
+}
+
+.statistics{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden;
+  margin: 0 auto;
+}
+
+.mainFont{
+font-size: 2rem;
+}
