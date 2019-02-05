@@ -6,7 +6,7 @@ import YouTube from "../components/YouTube";
 import Stats from "../components/Stats";
 import SideMenu from "../components/SideMenu";
 import Timer from "../components/Timer";
-import { selectedOption, trackScore, checkActive, saveScore } from "../actions";
+import { selectedOption, trackScore, checkActive, saveScore, getTime } from "../actions";
 
 class Dashboard extends Component {
   state = { active: 0, contentToSave: false };
@@ -34,23 +34,24 @@ class Dashboard extends Component {
                 <PoseNet />
                 {this.state.contentToSave ? (
                   <div>
-                    <h3>{this.props.score}</h3>
+                    <h3>Your score is {this.props.score}!</h3>
                     <Button
-                      onClick={ () =>
+                      onClick={() => {
                         this.props.saveScore({
                           score: this.props.score,
                           videoSelected: this.props.videoSelected,
                           time: this.props.time
-                        })}
+                        });
+                        this.setState({ contentToSave: false });
+                      }}
                       className="stopButton ui button primary"
                     >
                       Save
                     </Button>
                   </div>
                 ) : (
-                  <div />
+                  <div> </div>
                 )}
-
                 {this.renderButtons()}
               </Segment>
             </Grid.Column>
@@ -85,12 +86,23 @@ class Dashboard extends Component {
             </Button>
           </div>
         ) : (
-          <Button
-            onClick={this.onStartButton}
-            className="startButton ui button primary"
-          >
-            Start
-          </Button>
+          <div>
+            {this.props.active === "out" ? (
+              <Button
+                onClick={this.onStartButton}
+                className="startButton ui button primary"
+              >
+                Restart
+              </Button>
+            ) : (
+              <Button
+                onClick={this.onStartButton}
+                className="startButton ui button primary"
+              >
+                Start
+              </Button>
+            )}
+          </div>
         )}
       </div>
     );
@@ -126,10 +138,12 @@ class Dashboard extends Component {
   onStartButton = async () => {
     await this.props.trackScore(0);
     await this.props.checkActive("on");
+    await this.props.getTime("on");
   };
 
   onStopButton = async () => {
     await this.props.checkActive("out");
+  await this.props.getTime("out")
     await this.setState({ contentToSave: true });
   };
 
@@ -176,5 +190,5 @@ const mapStateProps = state => {
 };
 export default connect(
   mapStateProps,
-  { selectedOption, trackScore, checkActive, saveScore }
+  { selectedOption, trackScore, checkActive, saveScore, getTime }
 )(Dashboard);

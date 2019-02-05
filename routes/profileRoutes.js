@@ -4,22 +4,23 @@ const requireLogin = require("../middlewares/requireLogin");
 const User = mongoose.model("Score");
 
 module.exports = app => {
-  app.put("/api/forms/", requireLogin, (request, res) => {
-    console.log(requset.body);
-    const { profilePicture, age, time, zipcode, athleticType } = request.body;
+  app.put("/api/forms/", requireLogin, (request, response) => {
+    console.log(request.body);
     try {
-      const updateProfile = User.update(
+      const updateUser = User.update(
+        { _id: request.user._id },
         {
-          name,
-          profilePicture,
-          age,
-          time,
-          zipcode,
-          athleticType
+          name: request.body.name,
+          profilePicture: request.body.profilePicture,
+          age: request.body.age,
+          athleticType: request.body.athleticType
         },
         { new: true }
       );
-      response.send(user);
+
+      if (updateUser) {
+        response.send(user);
+      }
     } catch (err) {
       response.status(422).send(err);
     }

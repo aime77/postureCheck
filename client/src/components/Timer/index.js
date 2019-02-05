@@ -18,7 +18,7 @@ class Timer extends Component {
     if (this.props.active === "startClock") {
       this.toggleStartTimer();
     }
-    if (this.props.active === "on" || this.props.active === "pause") {
+    if (this.props.time === "out" || this.props.active === "on") {
       this.toggleTimer();
     }
   }
@@ -36,6 +36,7 @@ class Timer extends Component {
     this.setState({
       started: false
     });
+    
   };
 
   toggleTimer = () => {
@@ -68,11 +69,15 @@ class Timer extends Component {
             onStart={time =>
               console.info(`Timer started: ${JSON.stringify(time)}`)
             }
-            onStop={time => this.props.getTime(time)}
+            onStop={time =>
+              console.info(`Timer stopped: ${JSON.stringify(time)}`)
+            }
             onTick={time =>
               console.info(`Timer ticked: ${JSON.stringify(time)}`)
             }
-            onPause={time => this.props.getTime(time)}
+            onPause={time =>
+              console.info(`Timer ticked: ${JSON.stringify(time)}`)
+            }
             onResume={time =>
               console.info(`Timer resumed: ${JSON.stringify(time)}`)
             }
@@ -89,10 +94,11 @@ class Timer extends Component {
 const mapStateProps = state => {
   console.log(state.active);
   return {
-    active: state.active
+    active: state.active,
+    time:state.time
   };
 };
 export default connect(
   mapStateProps,
-  { checkActive, getTime}
+  { checkActive, getTime }
 )(Timer);
