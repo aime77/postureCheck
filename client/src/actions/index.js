@@ -43,10 +43,10 @@ export const saveScore = values => async dispatch => {
   dispatch({ type: FETCH_USER, payload: response.data });
 };
 
-export const profileInfo = () => async dispatch => {
-  const response = await axios.get("/api/profile");
-  dispatch({ type: FETCH_USER, payload: response.data });
-};
+// export const profileInfo = () => async dispatch => {
+//   const response = await axios.get("/api/profile");
+//   dispatch({ type: FETCH_USER, payload: response.data });
+// };
 
 
 //action creator to select video
@@ -94,7 +94,10 @@ export const scoresData = ( )=> async dispatch => {
 };
 
 export const userDataFunction = ( )=> async dispatch => {
+  console.log("hello")
+  
   const response = await axios.get("/api/profile");
-  console.log(response)
+
+  
   dispatch({ type: FETCH_DATA_USER, payload: response.data });
 };

@@ -28,10 +28,6 @@ class ProfilePage extends Component {
   }
 
   render() {
-    const labels={
-      a:"Athletic Type",
-
-    }
     return (
       <Container>
         {this.renderModal()}
@@ -70,6 +66,7 @@ class ProfilePage extends Component {
   }
 }
 const mapStateProps = state => {
+  console.log(state.userData)
   return {
     userData: state.userData
   };

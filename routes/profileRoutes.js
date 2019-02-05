@@ -27,6 +27,8 @@ module.exports = app => {
   });
 
   app.get("/api/profile", requireLogin, async (request, response) => {
+
+    console.log("hello")
     try {
       const updateUser = await  Profile.findOne({ _user: request.user.id });
 

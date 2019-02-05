@@ -37,7 +37,7 @@ class Dashboard extends Component {
           <Grid.Row columns={2}>
             <Grid.Column>
               <Segment>
-                <PoseNet />
+                
                 {this.state.contentToSave ? (
                   <div>
                     <h3>Your score is {this.props.score}!</h3>
@@ -56,7 +56,7 @@ class Dashboard extends Component {
                     </Button>
                   </div>
                 ) : (
-                  <div> </div>
+                  <div> <PoseNet /></div>
                 )}
                 {this.renderButtons()}
               </Segment>
@@ -95,7 +95,7 @@ class Dashboard extends Component {
           <div>
             {this.props.active === "out" ? (
               <Button
-                onClick={this.onStartButton}
+                onClick={this.onRestartButton}
                 className="startButton ui button primary"
               >
                 Restart
@@ -155,6 +155,12 @@ class Dashboard extends Component {
 
   onPauseButton = async () => {
     await this.props.checkActive("pause");
+  };
+
+  onRestartButton = async () => {
+    await this.props.trackScore(0);
+    await this.props.checkActive("on");
+    await this.props.getTime("on");
   };
 
   render() {
