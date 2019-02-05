@@ -37,7 +37,6 @@ class Dashboard extends Component {
           <Grid.Row columns={2}>
             <Grid.Column>
               <Segment>
-                
                 {this.state.contentToSave ? (
                   <div>
                     <h3>Your score is {this.props.score}!</h3>
@@ -56,7 +55,10 @@ class Dashboard extends Component {
                     </Button>
                   </div>
                 ) : (
-                  <div> <PoseNet /></div>
+                  <div>
+                    {" "}
+                    <PoseNet />
+                  </div>
                 )}
                 {this.renderButtons()}
               </Segment>
