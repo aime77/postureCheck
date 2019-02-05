@@ -5,14 +5,8 @@ import PoseNet from "../components/PoseNet";
 import YouTube from "../components/YouTube";
 import Stats from "../components/Stats";
 import SideMenu from "../components/SideMenu";
-import {
-  selectedOption,
-  runTimer,
-  stopTimer,
-  trackScore,
-  checkActive,
-  saveScore
-} from "../actions";
+import Timer from "../components/Timer";
+import { selectedOption, trackScore, checkActive, saveScore } from "../actions";
 
 class Dashboard extends Component {
   state = { active: 0, contentToSave: false };
@@ -21,7 +15,7 @@ class Dashboard extends Component {
       <Segment inverted>
         <Statistic.Group widths="four" inverted>
           <Stats label="score" value={this.props.score} />
-          <Stats label="timer" value={this.props.timer.time} />
+          <Stats label="timer" value={<Timer />} />
           <Stats label="stretch type" value={this.props.videoSelected} />
         </Statistic.Group>
       </Segment>
@@ -42,13 +36,12 @@ class Dashboard extends Component {
                   <div>
                     <h3>{this.props.score}</h3>
                     <Button
-                      onClick={() =>
+                      onClick={ () =>
                         this.props.saveScore({
                           score: this.props.score,
-                          time: this.props.timer.time,
-                          videoSelected: this.props.videoSelected
-                        })
-                      }
+                          videoSelected: this.props.videoSelected,
+                          time: this.props.time
+                        })}
                       className="stopButton ui button primary"
                     >
                       Save
@@ -133,21 +126,14 @@ class Dashboard extends Component {
   onStartButton = async () => {
     await this.props.trackScore(0);
     await this.props.checkActive("on");
-    await this.props.runTimer();
   };
 
   onStopButton = async () => {
     await this.props.checkActive("out");
-    await this.props.stopTimer();
     await this.setState({ contentToSave: true });
   };
 
-  onPauseButon = async () => {
-    await this.props.checkActive("pause");
-    await this.props.pauseTimer();
-  };
-
-  onSaveButon = async () => {
+  onPauseButton = async () => {
     await this.props.checkActive("pause");
   };
 
@@ -184,12 +170,11 @@ const mapStateProps = state => {
     videos: state.videoArray,
     score: state.score,
     videoSelected: state.videoSelected.selection,
-    timer: state.timer,
-    activateTimer: state.timer.running,
-    active: state.active
+    active: state.active,
+    time: state.time
   };
 };
 export default connect(
   mapStateProps,
-  { selectedOption, runTimer, trackScore, stopTimer, checkActive, saveScore }
+  { selectedOption, trackScore, checkActive, saveScore }
 )(Dashboard);

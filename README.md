@@ -1,5 +1,9 @@
 # postureCheck
+## Install
+## Usage
+## User guide
 
+## Technologies
 * Semantic-ui
 * Tensorflow.js
 * React.js
@@ -9,3 +13,6 @@
 * axios
 * passport
 * googleAuth
+
+## Contributors
+* Aime Urquieta

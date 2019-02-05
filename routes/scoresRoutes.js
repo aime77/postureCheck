@@ -6,6 +6,8 @@ const Score = mongoose.model("Score");
 module.exports = app => {
   app.post("/api/scores", requireLogin, async (request, response) => {
     console.log(request.user);
+    console.log(response);
+    
    
 
     const scoreNew = new Score({

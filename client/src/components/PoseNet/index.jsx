@@ -146,8 +146,11 @@ class PoseNet extends React.Component {
             const addingScore = await (this.props.score + result);
             await this.props.trackScore(addingScore);
           }
-          if (this.props.active === "out") {
+         if (this.props.active === "out") {
             await this.onStopButton();
+          }
+         if (this.props.active === "pause") {
+            await this.onPauseButton();
           }
           break;
 
@@ -204,24 +207,14 @@ class PoseNet extends React.Component {
   }
 
   onStopButton = async () => {
+    console.log("stop")
     const stopVideo = await this.video.srcObject.getTracks()[0];
     await stopVideo.stop();
-    await clearInterval(this.state.timer);
-    await this.props.trackScore(0);
-
     await this.setState({ displayCamera: false, showVideo: false });
   };
 
-  onPauseButon = async () => {
-    await clearInterval(this.state.timer);
-    const { videoWidth, videoHeight } = this.props;
-    const canvas = this.canvas;
-    const ctx = canvas.getContext("2d");
-
-    canvas.width = videoWidth;
-    canvas.height = videoHeight;
-    ctx.drawImage(this.video, 0, 0, videoWidth, videoHeight); //*for pause
-    this.video.addClass("hide");
+  onPauseButton = async () => {
+    this.props.checkActive("pause");
   };
 
   render() {
@@ -233,8 +226,13 @@ class PoseNet extends React.Component {
     return (
       <div>
         {loading}
+
         <div className="PoseNet">
-          <video playsInline ref={this.getVideo} />
+          {this.props.active === "pause" ? (
+            ""
+          ) : (
+            <video playsInline ref={this.getVideo} />
+          )}
           <canvas ref={this.getCanvas} />
         </div>
       </div>

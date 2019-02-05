@@ -2,7 +2,7 @@ import { connect } from "react-redux";
 import React, { Component } from "react";
 import { Card, Image, List, Button, Modal } from "semantic-ui-react";
 import { profileRender } from "../actions";
-import FormNew from "./FormNew";
+import FormNew from "../components/FormNew";
 
 class ProfilePage extends Component {
   renderModal() {
