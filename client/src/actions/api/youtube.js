@@ -1,4 +1,4 @@
-import axios from "../../../../../google-books-search/client/node_modules/axios";
+import axios from "axios";
 const KEY = "AIzaSyA0dseKEfwC1OM1MdBqClFlWfSTRAgLTVk";
 
 export default axios.create({
