@@ -2,7 +2,6 @@ import React, { Component } from "react";
 import "./style.css";
 import posture1 from "../images/Picture1.png";
 import { Grid, Image, Container } from "semantic-ui-react";
-import { Wave } from "react-animated-text";
 import TextyAnim from "rc-texty/lib";
 import "rc-texty/assets/index.css";
 
@@ -101,5 +100,3 @@ export default class Home extends Component {
     );
   }
 }
-
-//<Wave ><i className="check square big outline icon"></i></Wave>
