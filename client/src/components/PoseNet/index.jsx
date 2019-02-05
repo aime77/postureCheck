@@ -146,7 +146,7 @@ class PoseNet extends React.Component {
             await this.props.trackScore(addingScore);
           }
           if (this.props.active === "out") {
-            await this.setState({ displayCamera: false, showVideo: false });
+            
             await this.onStopButton();
           }
           if (this.props.active === "pause") {
@@ -207,11 +207,12 @@ class PoseNet extends React.Component {
   }
 
   onStopButton = async () => {
-    if(!this.state.displayCamera){
+   
     const stopVideo = await this.video.srcObject.getTracks()[0];
     await stopVideo.stop();
+    await this.setState({ displayCamera: false, showVideo: false });
   }
-  };
+  
 
   onPauseButton = async () => {
     this.props.checkActive("pausePicture");

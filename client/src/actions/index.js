@@ -7,7 +7,6 @@ import {
   VIDEO_TYPE_SELECTED,
   SEARCH_SELECTED,
   CHECK_ACTIVE,
-  FETCH_POSTS,
   FETCH_DATA,
   FETCH_DATA_USER
 } from "./types";
@@ -17,7 +16,6 @@ export const fetchUser = () => async dispatch => {
   const response = await axios.get("/api/current_user");
   dispatch({ type: FETCH_USER, payload: response.data });
 };
-
 
 //action creator for form submission
 export const submitForm = (values, history) => async dispatch => {
@@ -37,17 +35,9 @@ export const profileRender = () => async dispatch => {
 
 //action creator to save score information
 export const saveScore = values => async dispatch => {
-  console.log(values);
-  console.log("testSave");
   const response = await axios.post("/api/scores", values);
   dispatch({ type: FETCH_USER, payload: response.data });
 };
-
-// export const profileInfo = () => async dispatch => {
-//   const response = await axios.get("/api/profile");
-//   dispatch({ type: FETCH_USER, payload: response.data });
-// };
-
 
 //action creator to select video
 export const selectedOption = videos => {
@@ -88,16 +78,13 @@ export const fetchVideos = videos => async dispatch => {
   });
 };
 
-export const scoresData = ( )=> async dispatch => {
+export const scoresData = () => async dispatch => {
   const response = await axios.get("/api/scores_data");
   dispatch({ type: FETCH_DATA, payload: response.data });
 };
 
-export const userDataFunction = ( )=> async dispatch => {
-  console.log("hello")
-  
+export const userDataFunction = () => async dispatch => {
   const response = await axios.get("/api/profile");
 
-  
   dispatch({ type: FETCH_DATA_USER, payload: response.data });
 };

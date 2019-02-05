@@ -36,6 +36,7 @@ class Dashboard extends Component {
           </Grid.Row>
           <Grid.Row columns={2}>
             <Grid.Column>
+              <PoseNet />
               <Segment>
                 {this.state.contentToSave ? (
                   <div>
@@ -57,7 +58,7 @@ class Dashboard extends Component {
                 ) : (
                   <div>
                     {" "}
-                    <PoseNet />
+                    
                   </div>
                 )}
                 {this.renderButtons()}
