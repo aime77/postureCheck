@@ -11,7 +11,6 @@ require("./services/passport");
 
 mongoose.connect(keys.mongoURI || "mongodb://localhost/posture-check");
 
-
 const app = express();
 app.use(bodyParser.json());
 app.use(

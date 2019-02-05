@@ -5,7 +5,7 @@ import { Grid, Image, Container } from "semantic-ui-react";
 import TextyAnim from "rc-texty/lib";
 import "rc-texty/assets/index.css";
 
-const text = "Time to... ✓ your posture";
+const text = "✓ your posture";
 
 export default class Home extends Component {
   getEnter = e => {
