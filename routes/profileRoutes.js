@@ -1,25 +1,38 @@
 const mongoose = require("mongoose");
 
 const requireLogin = require("../middlewares/requireLogin");
-const User = mongoose.model("Score");
+const Profile = mongoose.model("Profile");
+const User = mongoose.model("User");
 
 module.exports = app => {
-  app.put("/api/forms/", requireLogin, (request, response) => {
-    console.log(request.body);
+  app.post("/api/forms", requireLogin, async (request, response) => {
+
     try {
-      const updateUser = User.update(
-        { _id: request.user._id },
-        {
-          name: request.body.name,
-          profilePicture: request.body.profilePicture,
-          age: request.body.age,
-          athleticType: request.body.athleticType
-        },
-        { new: true }
-      );
+      const newProfile = await Profile.create({
+        name: request.body.name,
+        age: request.body.age,
+        zipcode: request.body.zipcode,
+        profilePicture: request.body.profilePicture,
+        athleticType: request.body.athleticType,
+        date: Date.now(),
+        _user: request.user.id
+      });
+
+      if (newProfile) {
+        response.send(user);
+      }
+    } catch (err) {
+      response.status(422).send(err);
+    }
+  });
+
+  app.get("/api/profile", requireLogin, async (request, response) => {
+    try {
+      const updateUser = await  Profile.findOne({ _user: request.user.id });
 
       if (updateUser) {
-        response.send(user);
+          console.log(updateUser)
+        response.send(updateUser);
       }
     } catch (err) {
       response.status(422).send(err);

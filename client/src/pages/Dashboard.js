@@ -6,7 +6,13 @@ import YouTube from "../components/YouTube";
 import Stats from "../components/Stats";
 import SideMenu from "../components/SideMenu";
 import Timer from "../components/Timer";
-import { selectedOption, trackScore, checkActive, saveScore, getTime } from "../actions";
+import {
+  selectedOption,
+  trackScore,
+  checkActive,
+  saveScore,
+  getTime
+} from "../actions";
 
 class Dashboard extends Component {
   state = { active: 0, contentToSave: false };
@@ -143,7 +149,7 @@ class Dashboard extends Component {
 
   onStopButton = async () => {
     await this.props.checkActive("out");
-  await this.props.getTime("out")
+    await this.props.getTime("out");
     await this.setState({ contentToSave: true });
   };
 

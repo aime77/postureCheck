@@ -7,7 +7,9 @@ import {
   VIDEO_TYPE_SELECTED,
   SEARCH_SELECTED,
   CHECK_ACTIVE,
-  FETCH_POSTS
+  FETCH_POSTS,
+  FETCH_DATA,
+  FETCH_DATA_USER
 } from "./types";
 
 //action creator for api call
@@ -16,14 +18,11 @@ export const fetchUser = () => async dispatch => {
   dispatch({ type: FETCH_USER, payload: response.data });
 };
 
-export const handleToken = token => async dispatch => {
-  const response = await axios.post("/api/stripe", token);
-  dispatch({ type: FETCH_USER, payload: response.data });
-};
+
 //action creator for form submission
 export const submitForm = (values, history) => async dispatch => {
   console.log(values);
-  const response = await axios.put("/api/forms", values);
+  const response = await axios.post("/api/forms", values);
 
   console.log(response);
   history.push("/dashboard");
@@ -49,11 +48,6 @@ export const profileInfo = () => async dispatch => {
   dispatch({ type: FETCH_USER, payload: response.data });
 };
 
-//get data from
-export const fetchPost = () => async dispatch => {
-  const response = await axios.get("/postureHealthFacts");
-  dispatch({ type: FETCH_POSTS, payload: response });
-};
 
 //action creator to select video
 export const selectedOption = videos => {
@@ -78,18 +72,29 @@ export const getTime = time => async dispatch => {
 };
 
 //action creator for youtube api call
-export const youTubeSearch = videos => {
-  const response = youtube.get("/search", {
+export const fetchVideos = videos => async dispatch => {
+  const response = await youtube.get("/search", {
     params: {
       q: videos
     }
   });
 
-  return {
+  dispatch({
     type: SEARCH_SELECTED,
     payload: {
       selectedVideo: response.data.items[0],
       videos: response.data.items
     }
-  };
+  });
+};
+
+export const scoresData = ( )=> async dispatch => {
+  const response = await axios.get("/api/scores_data");
+  dispatch({ type: FETCH_DATA, payload: response.data });
+};
+
+export const userDataFunction = ( )=> async dispatch => {
+  const response = await axios.get("/api/profile");
+  console.log(response)
+  dispatch({ type: FETCH_DATA_USER, payload: response.data });
 };

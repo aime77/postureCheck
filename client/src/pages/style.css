@@ -16,4 +16,13 @@ i.dropdown.icon {
 
 .mainFont{
 font-size: 2rem;
+
+}
+
+.logoFont{
+  font-size: 8rem;
+}
+
+a:hover{
+ text-decoration: none 
 }

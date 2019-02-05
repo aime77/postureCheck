@@ -5,3 +5,5 @@ export const VIDEO_TYPE_SELECTED= "video-type-selected";
 export const SEARCH_SELECTED="search-selected";
 export const CHECK_ACTIVE="check-active";
 export const FETCH_POSTS="check-posts";
+export const FETCH_DATA="fetch-data";
+export const FETCH_DATA_USER="fetch-data-user";

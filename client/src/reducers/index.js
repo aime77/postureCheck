@@ -4,6 +4,8 @@ import authReducer from "./authReducer";
 import { activeReducer } from "./activeReducer";
 import { timeReducer } from "./timeReducer";
 import { scoreReducer } from "./scoreReducer";
+import { getDataScoresReducer } from "./getDataScoresReducer";
+import { getDataUserReducer } from "./getDataUserReducer";
 import * as videoReducer from "./videoReducer";
 
 export default combineReducers({
@@ -14,5 +16,7 @@ export default combineReducers({
   VideoSearch: videoReducer.youTubeSearchReducer,
   score: scoreReducer,
   active: activeReducer,
-  time: timeReducer
+  time: timeReducer,
+  scoresData: getDataScoresReducer,
+  userData: getDataUserReducer
 });

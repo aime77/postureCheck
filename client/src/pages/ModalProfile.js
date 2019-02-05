@@ -1,7 +1,16 @@
 import { connect } from "react-redux";
 import React, { Component } from "react";
-import { Card, Image, List, Button, Modal } from "semantic-ui-react";
-import { profileRender } from "../actions";
+import {
+  Card,
+  Image,
+  List,
+  Button,
+  Modal,
+  Grid,
+  Segment,
+  Container
+} from "semantic-ui-react";
+import { userDataFunction } from "../actions";
 import FormNew from "../components/FormNew";
 
 class ProfilePage extends Component {
@@ -9,17 +18,9 @@ class ProfilePage extends Component {
     return (
       <Modal
         className="modalSyle"
-        trigger={<Button>Contribute to Research</Button>}
+        trigger={<Button>Update Profile Info</Button>}
       >
         <Modal.Header>Profile Info</Modal.Header>
-        {/* <Modal.Content image>
-      <Image wrapped size='medium' src='/images/avatar/large/rachel.png' />
-      <Modal.Description>
-        <Header>Default Profile Image</Header>
-        <p>We've found the following gravatar image associated with your e-mail address.</p>
-        <p>Is it okay to use this photo?</p>
-      </Modal.Description>
-    </Modal.Content> */}
 
         <FormNew />
       </Modal>
@@ -27,36 +28,54 @@ class ProfilePage extends Component {
   }
 
   render() {
+    const labels={
+      a:"Athletic Type",
+
+    }
     return (
-      <Card>
-        <Card.Content>
-          <Image floated="right" size="large" src={this.props.profileImage} />
-          <Card.Header>{this.props.profileName}</Card.Header>
-          <Card.Description>
-            <List>
-              <List.Item content="Profile Info" />
-              <List.Item icon="options" content={this.props.athleticType} />
-              <List.Item icon="male" content={this.props.profileName} />
-              <List.Item icon="marker" content={this.props.zipcode} />
-            </List>
-          </Card.Description>
-        </Card.Content>
-      </Card>
+      <Container>
+        {this.renderModal()}
+        <Grid.Column width={16}>
+          <Segment>
+            <Card centered>
+              <Card.Content>
+                <Image
+                  floated="right"
+                  size="large"
+                  src={this.props.userData.profilePicture}
+                />
+                <Card.Header>{this.props.userData.name}</Card.Header>
+                <Card.Description>
+                  <List>
+                    
+                    <List.Item
+                      icon="options big"
+                      header="Athletic Type:"
+                      content={this.props.userData.athleticType}
+                    />
+                    <List.Item icon="male big" header="Age:" content={this.props.userData.age} />
+                    <List.Item
+                      icon="marker big"
+                      header="Zip Code:"
+                      content={this.props.userData.zipcode}
+                    />
+                  </List>
+                </Card.Description>
+              </Card.Content>
+            </Card>
+          </Segment>
+        </Grid.Column>
+      </Container>
     );
   }
 }
 const mapStateProps = state => {
   return {
-    videos: state.videoArray,
-    score: state.score,
-    videoSelected: state.videoSelected.selection,
-    timer: state.timer,
-    activateTimer: state.timer.running,
-    active: state.active
+    userData: state.userData
   };
 };
 
 export default connect(
   mapStateProps,
-  { profileRender }
+  { userDataFunction }
 )(ProfilePage);

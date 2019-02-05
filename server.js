@@ -6,9 +6,11 @@ const bodyParser = require("body-parser");
 const keys = require("./config/keys");
 require("./models/User");
 require("./models/Scores");
+require("./models/Profile");
 require("./services/passport");
 
 mongoose.connect(keys.mongoURI || "mongodb://localhost/posture-check");
+
 
 const app = express();
 app.use(bodyParser.json());
@@ -18,7 +20,7 @@ app.use(
     keys: [keys.cookieKey]
   })
 );
-
+app.use(express.urlencoded({ extended: true }));
 app.use(passport.initialize());
 app.use(passport.session());
 
