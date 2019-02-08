@@ -13,7 +13,7 @@ export default combineReducers({
   form: reduxForm,
   videoSelected: videoReducer.selectedVideoType,
   videoArray: videoReducer.videoReducer,
-  VideoSearch: videoReducer.youTubeSearchReducer,
+  videoSearch: videoReducer.youTubeSearchReducer,
   score: scoreReducer,
   active: activeReducer,
   time: timeReducer,

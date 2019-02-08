@@ -17,10 +17,10 @@ export const selectedVideoType = (selectedOption = "", action) => {
   return selectedOption;
 };
 
-export const youTubeSearchReducer = (youTubeSearch = null, action) => {
+export const youTubeSearchReducer = (fetchVideos = null, action) => {
   if (action.type === SEARCH_SELECTED) {
     return action.payload;
   }
 
-  return youTubeSearch;
+  return fetchVideos;
 };

@@ -23,6 +23,7 @@ export default class SideMenu extends Component {
         </Link>
         <Link to="/stats">
           <Menu.Item
+          href="localhost:3003"
             name="pie graph"
             active={activeItem === "pie graph"}
           >

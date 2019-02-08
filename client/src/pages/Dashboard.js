@@ -56,17 +56,16 @@ class Dashboard extends Component {
                     </Button>
                   </div>
                 ) : (
-                  <div>
-                    {" "}
-                    
-                  </div>
+                  <div> </div>
                 )}
                 {this.renderButtons()}
               </Segment>
             </Grid.Column>
             <Grid.Column>
               <Segment>
-                <YouTube />
+              
+                <YouTube q={this.props.videoSelected} />
+                
               </Segment>
             </Grid.Column>
           </Grid.Row>
@@ -119,6 +118,7 @@ class Dashboard extends Component {
 
   onClickSelect = () => {
     this.setState({ active: Math.random() });
+    
   };
 
   renderList() {
@@ -205,5 +205,5 @@ const mapStateProps = state => {
 };
 export default connect(
   mapStateProps,
-  { selectedOption, trackScore, checkActive, saveScore, getTime }
+  { selectedOption, trackScore, checkActive, saveScore, getTime}
 )(Dashboard);

@@ -3,6 +3,7 @@ import youtube from "../../actions/api/youtube";
 import VideoList from "./VideoList";
 import VideoDetail from "./VideoDetail";
 import { connect } from "react-redux";
+import { fetchVideos } from "../../actions";
 
 class YouTube extends React.Component {
   state = { videos: [], selectedVideo: null };
@@ -10,7 +11,7 @@ class YouTube extends React.Component {
   searchYouTube = async () => {
     const response = await youtube.get("/search", {
       params: {
-        q: this.props.videoSelected
+        q: this.props.q
       }
     });
 
@@ -19,12 +20,11 @@ class YouTube extends React.Component {
       selectedVideo: response.data.items[0]
     });
   };
-
-  componentWillReceiveProps() {
+  componentDidMount() {
     this.searchYouTube();
   }
 
-  componentDidMount() {
+  componentWillReceiveProps() {
     this.searchYouTube();
   }
 
@@ -56,7 +56,14 @@ class YouTube extends React.Component {
 }
 
 function mapStateProps(state) {
-  return { videoSelected: state.videoSelected.selection };
+  console.log(state);
+  return {
+    videoSelected: state.videoSelected.selection,
+    search: state.videoSearch
+  };
 }
 
-export default connect(mapStateProps)(YouTube);
+export default connect(
+  mapStateProps,
+  { fetchVideos }
+)(YouTube);

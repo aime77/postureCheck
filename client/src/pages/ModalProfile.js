@@ -10,7 +10,7 @@ import {
   Segment,
   Container
 } from "semantic-ui-react";
-import { userDataFunction } from "../actions";
+
 import FormNew from "../components/FormNew";
 
 class ProfilePage extends Component {
@@ -18,7 +18,9 @@ class ProfilePage extends Component {
     return (
       <Modal
         className="modalSyle"
-        trigger={<Button>Update Profile Info</Button>}
+        trigger={
+          <Button className="ui button secondary">Update Profile Info</Button>
+        }
       >
         <Modal.Header>Profile Info</Modal.Header>
 
@@ -31,48 +33,58 @@ class ProfilePage extends Component {
     return (
       <Container>
         {this.renderModal()}
-        <Grid.Column width={16}>
-          <Segment>
-            <Card centered>
-              <Card.Content>
-                <Image
-                  floated="right"
-                  size="large"
-                  src={this.props.userData.profilePicture}
-                />
-                <Card.Header>{this.props.userData.name}</Card.Header>
-                <Card.Description>
-                  <List>
-                    
-                    <List.Item
-                      icon="options big"
-                      header="Athletic Type:"
-                      content={this.props.userData.athleticType}
-                    />
-                    <List.Item icon="male big" header="Age:" content={this.props.userData.age} />
-                    <List.Item
-                      icon="marker big"
-                      header="Zip Code:"
-                      content={this.props.userData.zipcode}
-                    />
-                  </List>
-                </Card.Description>
-              </Card.Content>
-            </Card>
-          </Segment>
-        </Grid.Column>
+        {this.props.user !== null ? (
+          <Grid.Column width={16}>
+            <Segment>
+              <Card centered>
+                <Card.Content>
+                  <Image
+                    floated="right"
+                    size="large"
+                    src={this.props.user.profilePicture}
+                  />
+
+                  <Card.Description>
+                    <List>
+                      <List.Item
+                        className="fontCard"
+                        content={this.props.user.name}
+                      />
+                      <List.Item
+                        className="fontCard"
+                        icon="options big"
+                        header="Athletic Type:"
+                        content={this.props.user.athleticType}
+                      />
+                      <List.Item
+                        className="fontCard"
+                        icon="male big"
+                        header="Gender:"
+                        content={this.props.user.age}
+                      />
+                      <List.Item
+                        className="fontCard"
+                        icon="marker big"
+                        header="Zip Code:"
+                        content={this.props.user.zipcode}
+                      />
+                    </List>
+                  </Card.Description>
+                </Card.Content>
+              </Card>
+            </Segment>
+          </Grid.Column>
+        ) : (
+          ""
+        )}
       </Container>
     );
   }
 }
 const mapStateProps = state => {
-  console.log(state.userData)
   return {
-    userData: state.userData
+    user: state.auth
   };
 };
 
-export default connect(
-  mapStateProps,
-  { userDataFunction }
-)(ProfilePage);
+export default connect(mapStateProps)(ProfilePage);

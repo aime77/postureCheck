@@ -20,7 +20,7 @@ export const fetchUser = () => async dispatch => {
 //action creator for form submission
 export const submitForm = (values, history) => async dispatch => {
   console.log(values);
-  const response = await axios.post("/api/forms", values);
+  const response = await axios.put("/api/forms", values);
 
   console.log(response);
   history.push("/dashboard");
@@ -28,10 +28,10 @@ export const submitForm = (values, history) => async dispatch => {
 };
 
 //action to get profile info per user
-export const profileRender = () => async dispatch => {
-  const response = await axios.get("/api/profile");
-  dispatch({ type: FETCH_USER, payload: response.data });
-};
+// export const profileRender = () => async dispatch => {
+//   const response = await axios.get("/api/profile");
+//   dispatch({ type: FETCH_USER, payload: response.data });
+// };
 
 //action creator to save score information
 export const saveScore = values => async dispatch => {
@@ -84,6 +84,7 @@ export const scoresData = () => async dispatch => {
 };
 
 export const userDataFunction = () => async dispatch => {
+  console.log("get userdata")
   const response = await axios.get("/api/profile");
 
   dispatch({ type: FETCH_DATA_USER, payload: response.data });
