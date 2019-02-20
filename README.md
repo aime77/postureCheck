@@ -1,7 +1,6 @@
-# postureCheck
-## Install
-## Usage
-## User guide
+# Posture Check
+## Overview
+A sophisticated posture game which tracks body points while the user performs YouTube video stretches.
 
 ## Technologies
 * Semantic-ui
@@ -10,9 +9,12 @@
 * Mongoose
 * Node
 * Express
-* axios
-* passport
-* googleAuth
+* Axios
+* Passport
+* GoogleAuth
+
+## Implementation
+Currently restructuring statistics functionality to implement D3.js at a personalized user level 
 
 ## Contributors
 * Aime Urquieta
